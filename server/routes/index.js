@@ -6,11 +6,12 @@ const {
   addProduct,
   editProduct,
   getProducts,
+  getProduct,
 } = require('../controllers');
 
 router.get('/products', getProducts);
 router.post('/product', addProduct);
-router.put('/product/:id', editProduct);
+router.route('/product/:id').get(getProduct).put(editProduct);
 router.use(clientError);
 router.use(serverError);
 

@@ -2,6 +2,7 @@ const router = require('express').Router();
 
 const {
   addProduct,
+  deleteProduct,
   editProduct,
   getProducts,
   getProduct,
@@ -9,6 +10,6 @@ const {
 
 router.get('/products', getProducts);
 router.post('/product', addProduct);
-router.route('/product/:id').get(getProduct).put(editProduct);
+router.route('/product/:id').get(getProduct).put(editProduct).delete(deleteProduct);
 
 module.exports = router;

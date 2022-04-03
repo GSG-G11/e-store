@@ -4,7 +4,7 @@
   "description": "Ecommerce website that allows users to buy products online",
   "main": "index.js",
   "scripts": {
-    "test:routes": "NODE_ENV=test jest ./__test__/routes.test.js --watch",
+    "test:routes": "NODE_ENV=test jest ./__test__/routes.test.js",
     "test:db": "NODE_ENV=test jest ./__test__/db.test.js",
     "client": "cd client && npm start",
     "start": " NODE_ENV=production node server",

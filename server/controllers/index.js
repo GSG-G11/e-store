@@ -4,6 +4,7 @@ const {
   addProduct,
   editProduct,
   getProduct,
+  deleteProduct,
 } = require('./products');
 
 module.exports = {
@@ -11,6 +12,7 @@ module.exports = {
   serverError,
   getProducts,
   addProduct,
+  deleteProduct,
   editProduct,
   getProduct,
 };

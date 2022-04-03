@@ -1,3 +1,4 @@
 const { CustomErr } = require('./error');
+const { productsSchema } = require('./validtion');
 
-module.exports = { CustomErr };
+module.exports = { CustomErr, productsSchema };

@@ -1,3 +1,3 @@
-const { addProductQuery } = require('./products');
+const { addProductQuery, editProductQuery } = require('./products');
 
-module.exports = { addProductQuery };
+module.exports = { addProductQuery, editProductQuery };

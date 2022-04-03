@@ -1,6 +1,6 @@
 const { getProductsQuery } = require('../../database/queries');
 
-module.exports = async (req, res, next) => {
+const getProducts = async (req, res, next) => {
   try {
     const { rows: products } = await getProductsQuery();
     res.json({ message: 'Success', products });
@@ -8,3 +8,5 @@ module.exports = async (req, res, next) => {
     next(err);
   }
 };
+
+module.exports = getProducts;

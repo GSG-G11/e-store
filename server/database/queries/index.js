@@ -1,3 +1,3 @@
-const { getProductsQuery } = require('./products');
+const { getProductsQuery, addProductQuery } = require('./products');
 
-module.exports = { getProductsQuery };
+module.exports = { addProductQuery, getProductsQuery };

@@ -1,6 +1,5 @@
 const { clientError, serverError } = require('./error');
-const addProduct = require('./products/addProduct');
-const editProduct = require('./products/editProduct');
+const { addProduct, editProduct } = require('./products');
 
 module.exports = {
   clientError,

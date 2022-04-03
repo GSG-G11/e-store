@@ -1,5 +1,5 @@
 module.exports = (req, res, next) => {
-    res
+  res
     .status(404)
-    .json({message: 'Not Found Page'});
-}
+    .json({ message: 'Page Not Found' });
+};

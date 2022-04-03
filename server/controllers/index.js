@@ -1,7 +1,6 @@
-const notFoundPage = require('./errors/notFoundPage');
-const serverError = require('./errors/serverError');
+const { clientError, serverError } = require('./error');
 
 module.exports = {
-    notFoundPage,
-    serverError
-}
+  clientError,
+  serverError,
+};

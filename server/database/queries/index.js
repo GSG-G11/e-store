@@ -3,6 +3,7 @@ const {
   addProductQuery,
   editProductQuery,
   getProductQuery,
+  deleteProductQuery
 } = require('./products');
 
 module.exports = {
@@ -10,4 +11,5 @@ module.exports = {
   getProductsQuery,
   editProductQuery,
   getProductQuery,
+  deleteProductQuery,
 };

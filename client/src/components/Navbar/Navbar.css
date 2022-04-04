@@ -1,0 +1,66 @@
+nav .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 10px;
+}
+
+nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  box-shadow: 0 0 20px rgb(0 0 0 / 0.2);
+}
+
+nav img {
+  height: 60px;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  align-items: center;
+}
+
+nav ul li {
+  padding: 0 20px;
+}
+
+nav input {
+  padding: 5px;
+  outline: none;
+  border: 1px solid #ccc;
+  padding-right: 35px;
+  width: 100%;
+}
+
+nav .nav-input {
+  position: relative;
+  flex: 1;
+  max-width: 600px;
+}
+
+nav .nav-image {
+  margin-right: 10px;
+}
+
+nav .nav-input::after {
+  content: '\f002';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: bold;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #555;
+}
+
+nav a {
+  color: black;
+  text-decoration: none;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}

@@ -3,7 +3,7 @@ const Icon = (props) => {
   const { className, children, onClick, ...rest } = props;
   return (
     <div onClick={onClick} className="icon-container">
-      <i className={className} {...rest} id="icon">
+      <i className={className} {...rest}>
         {children}
       </i>
     </div>

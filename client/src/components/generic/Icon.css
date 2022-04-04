@@ -1,0 +1,15 @@
+.icon-container {
+  display: inline-block;
+  width: 2em;
+  height: 2em;
+  background-color: #f0ebeb;
+  border-radius: 50%;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+i {
+  font-size: 16px;
+}

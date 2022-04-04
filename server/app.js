@@ -4,6 +4,7 @@ const express = require('express');
 const compression = require('compression');
 const cors = require('cors');
 const router = require('./routes');
+const { clientError, serverError } = require('./controllers');
 
 const app = express();
 const { env: { PORT, NODE_ENV } } = process;
@@ -29,5 +30,8 @@ if (NODE_ENV === 'development' || NODE_ENV === 'test') {
     res.sendFile(join(__dirname, '..', 'client', 'build', 'index.html'));
   });
 }
+
+app.use(clientError);
+app.use(serverError);
 
 module.exports = app;

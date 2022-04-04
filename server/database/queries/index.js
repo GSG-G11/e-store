@@ -3,7 +3,7 @@ const {
   addProductQuery,
   editProductQuery,
   getProductQuery,
-  deleteProductQuery
+  deleteProductQuery,
 } = require('./products');
 
 module.exports = {

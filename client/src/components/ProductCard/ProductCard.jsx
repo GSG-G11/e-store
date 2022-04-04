@@ -21,7 +21,7 @@ const ProductCard = (props) => {
             <span>${price}</span>
             <Icon
               className="fa-solid fa-cart-plus"
-              onClick={() => addToCart(id)}
+              onClick={() => addToCart({id,img:image,category,name:title,price:Number(price)})}
             ></Icon>
           </div>
         </div>

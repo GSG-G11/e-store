@@ -2,7 +2,6 @@ import { Component } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navbar, ProductDetails } from './components';
 import './index.css';
-const productData={id:1, name:'laptop', img:'', category: "lab", price:20,description:"mmm"  }
 
 class App extends Component {
   state = {
@@ -39,13 +38,12 @@ class App extends Component {
             handleChange={this.handleChange}
             handleSearch={this.handleSearch}
           />
-          {/* <ProductDetails productData= {productData} /> */}
           
           <Routes>
             <Route path="/" element="home" />
             <Route path="/cart" element="Cart" />
             <Route path="/login" element="login" />
-            <Route path="/product" element={<ProductDetails productData= {productData}/>}/>
+            <Route path="/product" element={<ProductDetails/>}/>
           </Routes>
         </Router>
       </>

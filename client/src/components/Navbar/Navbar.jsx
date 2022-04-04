@@ -1,9 +1,17 @@
 import { Link } from 'react-router-dom';
+import { Button, Icon } from '../generic';
 import './Navbar.css';
 import logo from '../../images/logo.png';
 
 const Navbar = (props) => {
-  const { searchTerm, handleChange, handleSearch } = props;
+  const {
+    searchTerm,
+    handleChange,
+    handleSearch,
+    handleLogin,
+    navShow,
+    navToggleHandler,
+  } = props;
 
   return (
     <>
@@ -24,17 +32,22 @@ const Navbar = (props) => {
               onKeyPress={handleSearch}
             />
           </div>
-          <ul className="nav-controls">
+          <Icon
+            className="fa-solid fa-bars"
+            parentClassName={`nav-bars`}
+            onClick={navToggleHandler}
+          ></Icon>
+          <ul className={`nav-controls ${navShow && 'active'}`}>
             <li>
               <Link to="/cart">
-                <i className="fa-solid fa-cart-shopping"></i>
+                <Icon className="fa-solid fa-cart-shopping"></Icon>
               </Link>
             </li>
             <li>
               <Link to="/">Home</Link>
             </li>
             <li>
-              <button>Login</button>
+              <Button onClick={handleLogin}>Login</Button>
             </li>
           </ul>
         </div>

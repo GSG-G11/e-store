@@ -1,21 +1,21 @@
 import Button from '../generic/Button';
 import './ProductDetails.css';
 
-const ProductDetails = (productData) => {
+const ProductDetails = ({ productData }, AddToCard) => {
     const { id, name, img, category, price, description } = productData;
-    
+
     return (
-        <div className='container'>
+        <div className='Product-container'>
             <div className='image-container'>
                 <img className='image-class' src={img} alt={name} />
             </div>
             <div className='detail-container'>
-                <h1 className='name'> {name} </h1>
-                <p>{price}</p>
-                <p>{category}</p>
-                <p>{description}</p>
+                <h3 className='name'> {name} </h3>
+                <p className='price'>{price}</p>
+                <p >{category}</p>
+                <p className='description'>{description}</p>
 
-                <Button />
+                <Button onClick={AddToCard} />
             </div>
         </div>
     )

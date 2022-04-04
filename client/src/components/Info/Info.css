@@ -1,6 +1,6 @@
 .info-card {
   margin-top: 120px;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
   background-color: #4e989a;
   padding: 20px 0;
   color: white;
@@ -24,6 +24,7 @@
   border: 2px solid white;
   border-radius: 5px;
   align-items: center;
+  width: auto;
 }
 
 .info-card .card-footer button .icon-container {

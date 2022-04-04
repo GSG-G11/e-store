@@ -5,7 +5,7 @@ import './Login.css';
 
 const Login = ({ handleSubmit, handleChange }) => {
   return (
-    <main>
+    <main className='login'>
       <form onSubmit={handleSubmit}>
         <Title className="title" value={'Log in'} />
         <div className="pairs">

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Input = ({id, name ,type, value}) => {
+const Input = ({ name ,type, value}) => {
     return(
         <>
             <label>

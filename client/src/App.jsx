@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Navbar } from './components';
+import { Navbar, Info } from './components';
 import './index.css';
 
 class App extends Component {

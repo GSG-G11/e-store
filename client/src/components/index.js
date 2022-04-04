@@ -1,3 +1,4 @@
 import Navbar from './Navbar';
+import Info from './Info/Info';
 
-export { Navbar };
+export { Navbar, Info };

@@ -1,4 +1,5 @@
 import Navbar from './Navbar';
-import Info from './Info/Info';
+import Info from './Info';
+import Login from './login/Login';
 
-export { Navbar, Info };
+export { Navbar, Info, Login };

@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Navbar, Info } from './components';
+import { Navbar, Login } from './components';
 import './index.css';
 
 class App extends Component {
@@ -41,7 +41,7 @@ class App extends Component {
           <Routes>
             <Route path="/" element="home" />
             <Route path="/cart" element="cart" />
-            <Route path="/login" element="login" />
+            <Route path="/login" element={<Login />} />
           </Routes>
         </Router>
       </>

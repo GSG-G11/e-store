@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 import { Navbar, Login, Home } from './components';
+import Cart from './components/cart/Cart';
 import './index.css';
 
 class App extends Component {
@@ -9,6 +10,7 @@ class App extends Component {
     searchTerm: '',
     navShow: false,
     products: [],
+    cart: localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [],
   };
 
   handleChange = ({ target: { name, value } }) => {
@@ -27,13 +29,26 @@ class App extends Component {
     this.setState((prevState) => ({ navShow: !prevState.navShow }));
   };
 
-  addToCart = (id) => {
-    // Do Stuff...
+  addToCart = (newPrdouct) => {
+    let { cart } = this.state;
+    for(let i=0; i<cart.length; i++) {
+      if(cart[i].id === newPrdouct.id) {
+        cart[i].quantity += 1;
+        cart[i].totalPrice += cart[i].price;
+        this.setState({ cart });
+        localStorage.setItem('cart', JSON.stringify(cart));
+        return;
+      }
+    }
+    cart.push({...newPrdouct, quantity: 1,totalPrice:newPrdouct.price});
+    this.setState({ cart });
+    localStorage.setItem('cart', JSON.stringify(cart));
+    
   };
 
   componentDidMount = () => {
     axios
-      .get('/api/v1/products')
+      .get('http://localhost:5000/api/v1/products')
       .then((res) => {
         if (res.status === 200) {
           this.setState({ products: res.data.products });
@@ -45,7 +60,7 @@ class App extends Component {
   };
 
   render() {
-    const { searchTerm, navShow, products } = this.state;
+    const { searchTerm, navShow, products ,cart} = this.state;
 
     return (
       <>
@@ -62,7 +77,8 @@ class App extends Component {
               path="/"
               element={<Home products={products} addToCart={this.addToCart} />}
             />
-            <Route path="/cart" element="cart" />
+            Car
+            <Route path="/cart" element={<Cart cart={cart} increment={this.addToCart}/>} />
             <Route path="/login" element={<Login />} />
           </Routes>
         </Router>

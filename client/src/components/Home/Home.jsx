@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Info from '../Info';
+import Loader from '../Loader';
 import ProductCard from '../ProductCard';
-import { Title } from '../generic';
 import './Home.css';
 
 const Home = (props) => {
@@ -24,24 +24,28 @@ const Home = (props) => {
           <span>Top Selling Products</span>
         </h1>
 
-        <div className="products">
-          {products.length &&
-            products.map((product) => {
-              const { id, img, category, name, price } = product;
+        {products.length ? (
+          <div className="products">
+            {products.length &&
+              products.map((product) => {
+                const { id, img, category, name, price } = product;
 
-              return (
-                <ProductCard
-                  key={id}
-                  id={id}
-                  image={img}
-                  category={category}
-                  title={name}
-                  price={price}
-                  addToCart={addToCart}
-                />
-              );
-            })}
-        </div>
+                return (
+                  <ProductCard
+                    key={id}
+                    id={id}
+                    image={img}
+                    category={category}
+                    title={name}
+                    price={price}
+                    addToCart={addToCart}
+                  />
+                );
+              })}
+          </div>
+        ) : (
+          <Loader />
+        )}
       </div>
     </>
   );

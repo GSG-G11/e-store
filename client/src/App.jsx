@@ -10,7 +10,9 @@ class App extends Component {
     searchTerm: '',
     navShow: false,
     products: [],
-    cart: localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [],
+    cart: localStorage.getItem('cart')
+      ? JSON.parse(localStorage.getItem('cart'))
+      : [],
   };
 
   handleChange = ({ target: { name, value } }) => {
@@ -29,10 +31,10 @@ class App extends Component {
     this.setState((prevState) => ({ navShow: !prevState.navShow }));
   };
 
-  addToCart = (newPrdouct) => {
+  addToCart = (newProduct) => {
     let { cart } = this.state;
-    for(let i=0; i<cart.length; i++) {
-      if(cart[i].id === newPrdouct.id) {
+    for (let i = 0; i < cart.length; i++) {
+      if (cart[i].id === newProduct.id) {
         cart[i].quantity += 1;
         cart[i].totalPrice += cart[i].price;
         this.setState({ cart });
@@ -40,10 +42,9 @@ class App extends Component {
         return;
       }
     }
-    cart.push({...newPrdouct, quantity: 1,totalPrice:newPrdouct.price});
+    cart.push({ ...newProduct, quantity: 1, totalPrice: newProduct.price });
     this.setState({ cart });
     localStorage.setItem('cart', JSON.stringify(cart));
-    
   };
 
   componentDidMount = () => {
@@ -60,7 +61,7 @@ class App extends Component {
   };
 
   render() {
-    const { searchTerm, navShow, products ,cart} = this.state;
+    const { searchTerm, navShow, products, cart } = this.state;
 
     return (
       <>
@@ -78,7 +79,10 @@ class App extends Component {
               element={<Home products={products} addToCart={this.addToCart} />}
             />
             Car
-            <Route path="/cart" element={<Cart cart={cart} increment={this.addToCart}/>} />
+            <Route
+              path="/cart"
+              element={<Cart cart={cart} increment={this.addToCart} />}
+            />
             <Route path="/login" element={<Login />} />
           </Routes>
         </Router>

@@ -21,10 +21,6 @@ class App extends Component {
     }
   };
 
-  handleLogin = () => {
-    // Do Stuff...
-  };
-
   navToggleHandler = () => {
     this.setState((prevState) => ({ navShow: !prevState.navShow }));
   };
@@ -41,11 +37,11 @@ class App extends Component {
             navToggleHandler={this.navToggleHandler}
             handleChange={this.handleChange}
             handleSearch={this.handleSearch}
-            handleLogin={this.handleLogin}
           />
           <Routes>
             <Route path="/" element="home" />
             <Route path="/cart" element="cart" />
+            <Route path="/login" element="login" />
           </Routes>
         </Router>
       </>

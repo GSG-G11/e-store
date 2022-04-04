@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Button, Icon } from '../generic';
+import { Icon } from '../generic';
 import './Navbar.css';
 import logo from '../../images/logo.png';
 
@@ -8,7 +8,6 @@ const Navbar = (props) => {
     searchTerm,
     handleChange,
     handleSearch,
-    handleLogin,
     navShow,
     navToggleHandler,
   } = props;
@@ -47,7 +46,7 @@ const Navbar = (props) => {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Button onClick={handleLogin}>Login</Button>
+              <Link to='/login'>Login</Link>
             </li>
           </ul>
         </div>

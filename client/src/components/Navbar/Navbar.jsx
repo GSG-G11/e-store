@@ -1,16 +1,13 @@
-import { Link } from 'react-router-dom';
-import { Icon } from '../generic';
+import { Link, useNavigate } from 'react-router-dom';
+import { Icon, Button } from '../generic';
 import './Navbar.css';
 import logo from '../../images/logo.png';
 
 const Navbar = (props) => {
-  const {
-    searchTerm,
-    handleChange,
-    handleSearch,
-    navShow,
-    navToggleHandler,
-  } = props;
+  const { searchTerm, handleChange, handleSearch, navShow, navToggleHandler } =
+    props;
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -46,7 +43,10 @@ const Navbar = (props) => {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to='/login'>Login</Link>
+              <Button
+                children="Login"
+                onClick={() => navigate('/login')}
+              ></Button>
             </li>
           </ul>
         </div>

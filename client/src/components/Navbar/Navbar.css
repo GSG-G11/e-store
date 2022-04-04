@@ -11,6 +11,8 @@ nav {
   right: 0;
   top: 0;
   box-shadow: 0 0 20px rgb(0 0 0 / 0.2);
+  background-color: white;
+  z-index: 999;
 }
 
 nav img {

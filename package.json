@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/GSG-G11/e-store#readme",
   "dependencies": {
+    "axios": "^0.26.1",
     "compress": "^0.99.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",

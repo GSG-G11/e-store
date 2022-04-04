@@ -11,7 +11,7 @@ const AddForm = ({ handleSubmit, handleChange }) => {
     'TV'
   ]
   return (
-    <main>
+    <main className='addProduct'>
       <form onSubmit={handleSubmit}>
         <Title className="title" value={'Add Product'} /> 
         <div className='pairs'>

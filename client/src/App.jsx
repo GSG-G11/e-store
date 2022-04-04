@@ -6,6 +6,7 @@ import './index.css';
 class App extends Component {
   state = {
     searchTerm: '',
+    navShow: false,
   };
 
   handleChange = ({ target: { name, value } }) => {
@@ -20,16 +21,27 @@ class App extends Component {
     }
   };
 
+  handleLogin = () => {
+    // Do Stuff...
+  };
+
+  navToggleHandler = () => {
+    this.setState((prevState) => ({ navShow: !prevState.navShow }));
+  };
+
   render() {
-    const { searchTerm } = this.state;
+    const { searchTerm, navShow } = this.state;
 
     return (
       <>
         <Router>
           <Navbar
             searchTerm={searchTerm}
+            navShow={navShow}
+            navToggleHandler={this.navToggleHandler}
             handleChange={this.handleChange}
             handleSearch={this.handleSearch}
+            handleLogin={this.handleLogin}
           />
           <Routes>
             <Route path="/" element="home" />

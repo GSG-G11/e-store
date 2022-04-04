@@ -1,12 +1,13 @@
 import React from 'react';
+import './Input.css'
 
-const Input = ({ name ,type, value, handleChange}) => {
+const Input = ({ name ,type, handleChange}) => {
     return(
         <>
-            <label>
-                {name}
-                <input name={name} type={type} value={value} onChange={handleChange}></input>
-            </label>
+        <div className='input-form'>
+            <label htmlFor={name} className='label-input'>{name}</label>
+                <input name={name} type={type} value={handleChange} className='input'></input>
+        </div>
         </>
     )
 }

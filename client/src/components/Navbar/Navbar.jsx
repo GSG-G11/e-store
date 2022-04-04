@@ -4,8 +4,14 @@ import './Navbar.css';
 import logo from '../../images/logo.png';
 
 const Navbar = (props) => {
-  const { searchTerm, handleChange, handleSearch, navShow, navToggleHandler } =
-    props;
+  const {
+    searchTerm,
+    handleChange,
+    handleSearch,
+    navShow,
+    navToggleHandler,
+    numberOfProducts,
+  } = props;
 
   const navigate = useNavigate();
 
@@ -36,7 +42,10 @@ const Navbar = (props) => {
           <ul className={`nav-controls ${navShow && 'active'}`}>
             <li>
               <Link to="/cart">
-                <Icon className="fa-solid fa-cart-shopping"></Icon>
+                <div className="cart-icon-wrapper">
+                  <Icon className="fa-solid fa-cart-shopping"></Icon>
+                  <span> {numberOfProducts}</span>
+                </div>
               </Link>
             </li>
             <li>

@@ -25,7 +25,7 @@ const Cart = ({
       <div className="cart">
         <ul className="cart-list">
           {cart.map((item) => {
-            totalPrice+=item.totalPrice
+            totalPrice += item.totalPrice;
             return (
               <li key={item.id}>
                 <div className="cart-item">
@@ -50,17 +50,17 @@ const Cart = ({
                       <Icon
                         className="fa fa-plus"
                         onClick={() => increment(item)}
-                        parentClassName="icon-container"
+                        parentClassName="icon-container-cart"
                       ></Icon>
                       <span>{item.quantity}</span>
                       <Icon
                         className="fa fa-minus"
                         onClick={() => decrement(item.id)}
-                        parentClassName="icon-container"
+                        parentClassName="icon-container-cart"
                       ></Icon>
                     </div>
                     <Icon
-                      parentClassName="icon-container"
+                      parentClassName="icon-container-cart"
                       className="fa fa-trash"
                       onClick={() => removeFromCart(item.id)}
                     />
@@ -70,14 +70,18 @@ const Cart = ({
             );
           })}
         </ul>
-        
-          {!cart.length?<div className="total-price">No items in cart</div>:<div className="total-price"><p>Total price</p>
-          <p className="price-tag">{totalPrice}$</p>
-          <Button onClick={() => clearCart()}>
-            <i className="fa-solid fa-credit-card"></i> Proceed to checkout
-          </Button></div>}
-          
-        
+
+        {!cart.length ? (
+          <div className="total-price">No items in cart</div>
+        ) : (
+          <div className="total-price">
+            <p>Total price</p>
+            <p className="price-tag">{totalPrice}$</p>
+            <Button onClick={() => clearCart()}>
+              <i className="fa-solid fa-credit-card"></i> Proceed to checkout
+            </Button>
+          </div>
+        )}
       </div>
     </>
   );

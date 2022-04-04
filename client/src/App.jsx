@@ -10,7 +10,9 @@ class App extends Component {
     searchTerm: '',
     navShow: false,
     products: [],
-    cart: localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [],
+    cart: localStorage.getItem('cart')
+      ? JSON.parse(localStorage.getItem('cart'))
+      : [],
   };
 
   handleChange = ({ target: { name, value } }) => {
@@ -29,10 +31,10 @@ class App extends Component {
     this.setState((prevState) => ({ navShow: !prevState.navShow }));
   };
 
-  addToCart = (newPrdouct) => {
+  addToCart = (newProduct) => {
     let { cart } = this.state;
-    for(let i=0; i<cart.length; i++) {
-      if(cart[i].id === newPrdouct.id) {
+    for (let i = 0; i < cart.length; i++) {
+      if (cart[i].id === newProduct.id) {
         cart[i].quantity += 1;
         cart[i].totalPrice += cart[i].price;
         this.setState({ cart });
@@ -40,12 +42,41 @@ class App extends Component {
         return;
       }
     }
-    cart.push({...newPrdouct, quantity: 1,totalPrice:newPrdouct.price});
+    cart.push({ ...newProduct, quantity: 1, totalPrice: newProduct.price });
     this.setState({ cart });
     localStorage.setItem('cart', JSON.stringify(cart));
-    
   };
 
+  decrementFromCart = (id) => {
+    let { cart } = this.state;
+    for (let i = 0; i < cart.length; i++) {
+      if (cart[i].id === id) {
+        cart[i].quantity -= 1;
+        cart[i].totalPrice -= cart[i].price;
+        if (cart[i].quantity === 0) {
+          cart.splice(i, 1);
+        }
+        this.setState({ cart });
+        localStorage.setItem('cart', JSON.stringify(cart));
+        return;
+      }
+    }
+  };
+  removeFromCart = (id) => {
+    let { cart } = this.state;
+    for (let i = 0; i < cart.length; i++) {
+      if (cart[i].id === id) {
+        cart.splice(i, 1);
+        this.setState({ cart });
+        localStorage.setItem('cart', JSON.stringify(cart));
+        return;
+      }
+    }
+  };
+  clearCart = () => {
+    this.setState({ cart: [] });
+    localStorage.setItem('cart', JSON.stringify([]));
+  };
   componentDidMount = () => {
     axios
       .get('http://localhost:5000/api/v1/products')
@@ -60,8 +91,9 @@ class App extends Component {
   };
 
   render() {
-    const { searchTerm, navShow, products ,cart} = this.state;
-
+    const { searchTerm, navShow, products, cart } = this.state;
+    let numberOfProducts = cart.reduce((acc, curr) => acc + curr.quantity, 0);
+    console.log(numberOfProducts);
     return (
       <>
         <Router>
@@ -71,6 +103,7 @@ class App extends Component {
             navToggleHandler={this.navToggleHandler}
             handleChange={this.handleChange}
             handleSearch={this.handleSearch}
+            numberOfProducts={numberOfProducts}
           />
           <Routes>
             <Route
@@ -78,7 +111,18 @@ class App extends Component {
               element={<Home products={products} addToCart={this.addToCart} />}
             />
             Car
-            <Route path="/cart" element={<Cart cart={cart} increment={this.addToCart}/>} />
+            <Route
+              path="/cart"
+              element={
+                <Cart
+                  cart={cart}
+                  decrement={this.decrementFromCart}
+                  increment={this.addToCart}
+                  removeFromCart={this.removeFromCart}
+                  clearCart={this.clearCart}
+                />
+              }
+            />
             <Route path="/login" element={<Login />} />
           </Routes>
         </Router>

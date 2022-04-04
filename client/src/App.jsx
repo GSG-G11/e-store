@@ -1,13 +1,14 @@
 import { Component } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
-import { Navbar, Login, Home } from './components';
+import { Navbar, Login, Home, AddForm } from './components';
 import './index.css';
 
 class App extends Component {
   state = {
     searchTerm: '',
     navShow: false,
+    popUpDisplay: false,
     products: [],
   };
 
@@ -44,8 +45,11 @@ class App extends Component {
       });
   };
 
+  handleOpenPopUp = () => this.setState({ popUpDisplay: true });
+  handleClosePopUp = () => this.setState({ popUpDisplay: false });
+
   render() {
-    const { searchTerm, navShow, products } = this.state;
+    const { searchTerm, navShow, products, popUpDisplay } = this.state;
 
     return (
       <>
@@ -66,6 +70,10 @@ class App extends Component {
             <Route path="/login" element={<Login />} />
           </Routes>
         </Router>
+        {popUpDisplay &&
+        <AddForm
+          handleClosePopUp={this.handleClosePopUp}
+        />}
       </>
     );
   }

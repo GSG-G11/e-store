@@ -93,7 +93,7 @@ class App extends Component {
   render() {
     const { searchTerm, navShow, products, cart } = this.state;
     let numberOfProducts = cart.reduce((acc, curr) => acc + curr.quantity, 0);
-    console.log(numberOfProducts);
+
     return (
       <>
         <Router>

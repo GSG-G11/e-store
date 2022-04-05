@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
-import { Navbar, Login, Home, AddForm } from './components';
+import { Navbar, Login, Home, AddForm, ProductDetails } from './components';
 import Cart from './components/cart/Cart';
 import './index.css';
 
@@ -76,6 +76,7 @@ class App extends Component {
       }
     }
   };
+
   removeFromCart = (id) => {
     let { cart } = this.state;
     for (let i = 0; i < cart.length; i++) {
@@ -87,10 +88,12 @@ class App extends Component {
       }
     }
   };
+
   clearCart = () => {
     this.setState({ cart: [] });
     localStorage.setItem('cart', JSON.stringify([]));
   };
+
   componentDidMount = () => {
     axios
       .get('http://localhost:5000/api/v1/products')
@@ -100,7 +103,9 @@ class App extends Component {
         }
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 500) {
+          window.location.href = '/error';
+        }
       });
   };
 
@@ -124,6 +129,7 @@ class App extends Component {
             isLoggedIn={this.state.isLoggedIn}
             handleLogout={this.handleLogout}
           />
+
           <Routes>
             <Route
               path="/"
@@ -151,6 +157,12 @@ class App extends Component {
                 />
               }
             />
+            <Route
+              path="product/:id"
+              element={<ProductDetails addToCart={this.addToCart} />}
+            />
+            <Route path="/error" element={'Server Error'} />
+            <Route path="*" element={'Page Not Found'} />
           </Routes>
         </Router>
         {popUpDisplay && <AddForm handleClosePopUp={this.handleClosePopUp} />}

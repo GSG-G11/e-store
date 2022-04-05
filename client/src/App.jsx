@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
-import { Navbar, Login, Home } from './components';
+import { Navbar, Login, Home, AddForm } from './components';
 import Cart from './components/cart/Cart';
 import './index.css';
 
@@ -9,6 +9,7 @@ class App extends Component {
   state = {
     searchTerm: '',
     navShow: false,
+    popUpDisplay: false,
     products: [],
     cart: localStorage.getItem('cart')
       ? JSON.parse(localStorage.getItem('cart'))
@@ -90,8 +91,11 @@ class App extends Component {
       });
   };
 
+  handleOpenPopUp = () => this.setState({ popUpDisplay: true });
+  handleClosePopUp = () => this.setState({ popUpDisplay: false });
+
   render() {
-    const { searchTerm, navShow, products, cart } = this.state;
+    const { searchTerm, navShow, products, popUpDisplay, cart } = this.state;
     let numberOfProducts = cart.reduce((acc, curr) => acc + curr.quantity, 0);
 
     return (
@@ -126,6 +130,10 @@ class App extends Component {
             <Route path="/login" element={<Login />} />
           </Routes>
         </Router>
+        {popUpDisplay &&
+        <AddForm
+          handleClosePopUp={this.handleClosePopUp}
+        />}
       </>
     );
   }

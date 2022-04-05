@@ -6,14 +6,14 @@ import ProductCard from '../ProductCard';
 import './Home.css';
 
 const Home = (props) => {
-  const { products, addToCart, searchTerm, isLoggedIn } = props;
+  const { products, addToCart, searchTerm, isLoggedIn, popupToggleHandler } =
+    props;
   const navigate = useNavigate();
 
-  const filteredData = products
-    .filter((product) => {
-      if (searchTerm.length === 0) return true;
-      return product.name.toLowerCase().includes(searchTerm.toLowerCase())
-    })
+  const filteredData = products.filter((product) => {
+    if (searchTerm.length === 0) return true;
+    return product.name.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   return (
     <>
@@ -22,11 +22,7 @@ const Home = (props) => {
         label="Products"
         button={isLoggedIn ? 'Add Product' : 'Go To Cart'}
         icon="fa-solid fa-angle-right"
-        onClick={
-          !isLoggedIn
-            ? () => navigate('/cart')
-            : () => 'your display function here'
-        }
+        onClick={!isLoggedIn ? () => navigate('/cart') : popupToggleHandler}
       />
 
       <div className="container">
@@ -36,7 +32,7 @@ const Home = (props) => {
 
         {products.length ? (
           <div className="products">
-            {filteredData.length ?
+            {filteredData.length ? (
               filteredData.map((product) => {
                 const { id, img, category, name, price } = product;
 
@@ -53,8 +49,9 @@ const Home = (props) => {
                   />
                 );
               })
-            : <div>No Items Found</div>
-            }
+            ) : (
+              <div>No Items Found</div>
+            )}
           </div>
         ) : (
           <Loader />

@@ -10,6 +10,7 @@ class App extends Component {
     searchTerm: '',
     navShow: false,
     popUpDisplay: false,
+    errMessage: '',
     products: [],
     cart: localStorage.getItem('cart')
       ? JSON.parse(localStorage.getItem('cart'))
@@ -87,6 +88,45 @@ class App extends Component {
     localStorage.setItem('cart', JSON.stringify([]));
   };
 
+  addProductHandler = (e) => {
+    e.preventDefault();
+    const { name, price, description, photo, category } = e.target;
+    const data = {
+      name: name.value.trim(),
+      price: price.value.trim(),
+      description: description.value.trim(),
+      img: photo.value.trim(),
+      category: category.value.trim(),
+    };
+
+    if (
+      data.name === '' ||
+      data.price === '' ||
+      data.description === '' ||
+      data.img === '' ||
+      data.category === ''
+    )
+      return;
+
+    axios
+      .post('http://localhost:5000/api/v1/product', data)
+      .then((res) => {
+        this.setState((prevState) => {
+          return {
+            products: [...prevState.products, res.data.product],
+            popUpDisplay: false,
+          };
+        });
+      })
+      .catch((err) => {
+        if (err.response.status === 500) {
+          window.location.href = '/error';
+        } else if (err.response.status === 400) {
+          this.setState({ errMessage: err.response.data.message });
+        }
+      });
+  };
+
   componentDidMount = () => {
     axios
       .get('http://localhost:5000/api/v1/products')
@@ -102,12 +142,19 @@ class App extends Component {
       });
   };
 
-  handleOpenPopUp = () => this.setState({ popUpDisplay: true });
-  handleClosePopUp = () => this.setState({ popUpDisplay: false });
+  popupToggleHandler = () =>
+    this.setState((prevState) => ({ popUpDisplay: !prevState.popUpDisplay }));
 
   render() {
-    const { searchTerm, navShow, products, popUpDisplay, cart, isLoggedIn } =
-      this.state;
+    const {
+      searchTerm,
+      navShow,
+      products,
+      popUpDisplay,
+      cart,
+      isLoggedIn,
+      errMessage,
+    } = this.state;
     let numberOfProducts = cart.reduce((acc, curr) => acc + curr.quantity, 0);
 
     return (
@@ -126,7 +173,15 @@ class App extends Component {
           <Routes>
             <Route
               path="/"
-              element={<Home products={products} searchTerm={searchTerm} addToCart={this.addToCart} isLoggedIn={isLoggedIn} />}
+              element={
+                <Home
+                  products={products}
+                  isLoggedIn={isLoggedIn}
+                  searchTerm={searchTerm}
+                  addToCart={this.addToCart}
+                  popupToggleHandler={this.popupToggleHandler}
+                />
+              }
             />
             Car
             <Route
@@ -158,7 +213,13 @@ class App extends Component {
             <Route path="*" element={'Page Not Found'} />
           </Routes>
         </Router>
-        {popUpDisplay && <AddForm handleClosePopUp={this.handleClosePopUp} />}
+        {popUpDisplay && (
+          <AddForm
+            addProductHandler={this.addProductHandler}
+            popupToggleHandler={this.popupToggleHandler}
+            errMessage={errMessage}
+          />
+        )}
       </>
     );
   }

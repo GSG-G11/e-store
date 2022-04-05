@@ -29,12 +29,20 @@ const Cart = ({
             return (
               <li key={item.id}>
                 <div className="cart-item">
-                  <div className="img-container">
+                  <div
+                    className="img-container"
+                    onClick={() => navigate(`/product/${item.id}`)}
+                  >
                     <img src={item.img} alt="" />
                   </div>
                   <div className="item-details">
                     <div className="item-info">
-                      <p className="name">{item.name}</p>
+                      <p
+                        className="name"
+                        onClick={() => navigate(`/product/${item.id}`)}
+                      >
+                        {item.name}
+                      </p>
                       <p className="price">
                         Price per each{' '}
                         <span className="price-tag">{item.price}$</span>

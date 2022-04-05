@@ -6,7 +6,7 @@ import ProductCard from '../ProductCard';
 import './Home.css';
 
 const Home = (props) => {
-  const { products, addToCart, searchTerm } = props;
+  const { products, addToCart, searchTerm, isLoggedIn } = props;
   const navigate = useNavigate();
 
   const filteredData = products
@@ -20,9 +20,13 @@ const Home = (props) => {
       <Info
         title="Home"
         label="Products"
-        button="Go To Cart"
+        button={isLoggedIn ? 'Add Product' : 'Go To Cart'}
         icon="fa-solid fa-angle-right"
-        onClick={() => navigate('/cart')}
+        onClick={
+          !isLoggedIn
+            ? () => navigate('/cart')
+            : () => 'your display function here'
+        }
       />
 
       <div className="container">
@@ -38,6 +42,7 @@ const Home = (props) => {
 
                 return (
                   <ProductCard
+                    isLoggedIn={isLoggedIn}
                     key={id}
                     id={id}
                     image={img}

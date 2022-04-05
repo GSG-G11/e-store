@@ -83,3 +83,11 @@ img {
     min-width: 100%;
   }
 }
+
+.cart-item .img-container:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+.item-info .name:hover {
+  cursor: pointer;
+}

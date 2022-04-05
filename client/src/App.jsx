@@ -180,7 +180,10 @@ class App extends Component {
   };
 
   popupToggleHandler = (cancel) => {
-    this.setState((prevState) => ({ popUpDisplay: !prevState.popUpDisplay }));
+    this.setState((prevState) => ({
+      popUpDisplay: !prevState.popUpDisplay,
+      errMessage: '',
+    }));
 
     if (cancel) {
       this.setState({

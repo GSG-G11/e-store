@@ -1,20 +1,28 @@
-import { Component } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import axios from 'axios';
-import { Navbar, Login, Home, AddForm, ProductDetails } from './components';
-import Cart from './components/cart/Cart';
-import './index.css';
+import { Component } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import axios from "axios";
+import {
+  Navbar,
+  Login,
+  Home,
+  AddForm,
+  ProductDetails,
+  serverError,
+  notFound,
+} from "./components";
+import Cart from "./components/cart/Cart";
+import "./index.css";
 
 class App extends Component {
   state = {
-    searchTerm: '',
+    searchTerm: "",
     navShow: false,
     popUpDisplay: false,
-    errMessage: '',
+    errMessage: "",
     products: [],
     cart: JSON.parse(localStorage.cart) || [],
     isLoggedIn: JSON.parse(localStorage.isLoggedIn) || false,
-    curProduct: { id: '', name: '', description: '', category: '', photo: '' },
+    curProduct: { id: "", name: "", description: "", category: "", photo: "" },
   };
 
   handleChange = ({ target: { name, value } }) => {
@@ -23,13 +31,13 @@ class App extends Component {
   handleLogin = (e) => {
     e.preventDefault();
     this.setState({ isLoggedIn: true });
-    localStorage.setItem('isLoggedIn', true);
-    window.location.href = '/';
+    localStorage.setItem("isLoggedIn", true);
+    window.location.href = "/";
   };
   handleLogout = () => {
     this.setState({ isLoggedIn: false });
-    localStorage.setItem('isLoggedIn', false);
-    window.location.href = '/';
+    localStorage.setItem("isLoggedIn", false);
+    window.location.href = "/";
   };
 
   navToggleHandler = () => {
@@ -43,13 +51,13 @@ class App extends Component {
         cart[i].quantity += 1;
         cart[i].totalPrice += cart[i].price;
         this.setState({ cart });
-        localStorage.setItem('cart', JSON.stringify(cart));
+        localStorage.setItem("cart", JSON.stringify(cart));
         return;
       }
     }
     cart.push({ ...newProduct, quantity: 1, totalPrice: newProduct.price });
     this.setState({ cart });
-    localStorage.setItem('cart', JSON.stringify(cart));
+    localStorage.setItem("cart", JSON.stringify(cart));
   };
 
   decrementFromCart = (id) => {
@@ -62,7 +70,7 @@ class App extends Component {
           cart.splice(i, 1);
         }
         this.setState({ cart });
-        localStorage.setItem('cart', JSON.stringify(cart));
+        localStorage.setItem("cart", JSON.stringify(cart));
         return;
       }
     }
@@ -74,7 +82,7 @@ class App extends Component {
       if (cart[i].id === id) {
         cart.splice(i, 1);
         this.setState({ cart });
-        localStorage.setItem('cart', JSON.stringify(cart));
+        localStorage.setItem("cart", JSON.stringify(cart));
         return;
       }
     }
@@ -82,7 +90,7 @@ class App extends Component {
 
   clearCart = () => {
     this.setState({ cart: [] });
-    localStorage.setItem('cart', JSON.stringify([]));
+    localStorage.setItem("cart", JSON.stringify([]));
   };
 
   addProductHandler = (e, productId = 0) => {
@@ -97,17 +105,17 @@ class App extends Component {
     };
 
     if (
-      data.name === '' ||
-      data.price === '' ||
-      data.description === '' ||
-      data.img === '' ||
-      data.category === ''
+      data.name === "" ||
+      data.price === "" ||
+      data.description === "" ||
+      data.img === "" ||
+      data.category === ""
     )
       return;
 
     if (!productId) {
       axios
-        .post('http://localhost:5000/api/v1/product', data)
+        .post("http://localhost:5000/api/v1/product", data)
         .then((res) => {
           this.setState((prevState) => {
             return {
@@ -118,7 +126,7 @@ class App extends Component {
         })
         .catch((err) => {
           if (err.response.status === 500) {
-            window.location.href = '/error';
+            window.location.href = <serverError />;
           } else if (err.response.status === 400) {
             this.setState({ errMessage: err.response.data.message });
           }
@@ -141,7 +149,7 @@ class App extends Component {
         })
         .catch((err) => {
           if (err.response.status === 500) {
-            window.location.href = '/error';
+            window.location.href = <serverError />;
           } else if (err.response.status === 400) {
             this.setState({ errMessage: err.response.data.message });
           }
@@ -166,7 +174,7 @@ class App extends Component {
 
   componentDidMount = () => {
     axios
-      .get('http://localhost:5000/api/v1/products')
+      .get("http://localhost:5000/api/v1/products")
       .then((res) => {
         if (res.status === 200) {
           this.setState({ products: res.data.products });
@@ -174,7 +182,7 @@ class App extends Component {
       })
       .catch((err) => {
         if (err.response.status === 500) {
-          window.location.href = '/error';
+          window.location.href = <serverError />;
         }
       });
   };
@@ -182,17 +190,17 @@ class App extends Component {
   popupToggleHandler = (cancel) => {
     this.setState((prevState) => ({
       popUpDisplay: !prevState.popUpDisplay,
-      errMessage: '',
+      errMessage: "",
     }));
 
     if (cancel) {
       this.setState({
         curProduct: {
-          id: '',
-          name: '',
-          description: '',
-          category: '',
-          photo: '',
+          id: "",
+          name: "",
+          description: "",
+          category: "",
+          photo: "",
         },
       });
     }
@@ -264,8 +272,8 @@ class App extends Component {
               path="product/:id"
               element={<ProductDetails addToCart={this.addToCart} />}
             />
-            <Route path="/error" element={'Server Error'} />
-            <Route path="*" element={'Page Not Found'} />
+            <Route path="/error" element={<serverError />} />
+            <Route path="*" element={<notFound />} />
           </Routes>
         </Router>
         {popUpDisplay && (

@@ -6,6 +6,8 @@ import ProductCard from "./ProductCard";
 import AddForm from "./addForm";
 import ProductDetails from "./ProductDetails";
 import Confirmation from "./confirmation";
+import serverError from "./serverError";
+import notFound from "./NotFound";
 
 export {
   Navbar,
@@ -16,4 +18,6 @@ export {
   AddForm,
   ProductDetails,
   Confirmation,
+  serverError,
+  notFound,
 };

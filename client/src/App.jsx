@@ -14,12 +14,25 @@ class App extends Component {
     cart: localStorage.getItem('cart')
       ? JSON.parse(localStorage.getItem('cart'))
       : [],
+    isLoggedIn: localStorage.getItem('isLoggedIn')
+      ? JSON.parse(localStorage.getItem('isLoggedIn'))
+      : false,
   };
 
   handleChange = ({ target: { name, value } }) => {
     this.setState({ [name]: value });
   };
-
+  handleLogin = (e) => {
+    e.preventDefault();
+    this.setState({ isLoggedIn: true });
+    localStorage.setItem('isLoggedIn', true);
+    window.location.href = '/';
+  };
+  handleLogout = () => {
+    this.setState({ isLoggedIn: false });
+    localStorage.setItem('isLoggedIn', false);
+    window.location.href = '/';
+  };
   handleSearch = ({ key }) => {
     const { searchTerm } = this.state;
 
@@ -113,6 +126,8 @@ class App extends Component {
             handleChange={this.handleChange}
             handleSearch={this.handleSearch}
             numberOfProducts={numberOfProducts}
+            isLoggedIn={this.state.isLoggedIn}
+            handleLogout={this.handleLogout}
           />
 
           <Routes>
@@ -133,7 +148,15 @@ class App extends Component {
                 />
               }
             />
-            <Route path="/login" element={<Login />} />
+            <Route
+              path="/login"
+              element={
+                <Login
+                  handleChange={this.handleChange}
+                  handleSubmit={this.handleLogin}
+                />
+              }
+            />
             <Route
               path="product/:id"
               element={<ProductDetails addToCart={this.addToCart} />}

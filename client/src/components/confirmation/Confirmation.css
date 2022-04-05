@@ -1,0 +1,72 @@
+.modal button {
+  background-color: #04aa6d;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.modal button:hover {
+  opacity: 1;
+}
+
+.modal .cancelbtn,
+.modal .deletebtn {
+  margin-top: 40px;
+  float: left;
+  width: 50%;
+}
+
+.modal .cancelbtn {
+  background-color: #ccc;
+  color: black;
+}
+
+.modal .deletebtn {
+  background-color: #4e989a;
+}
+
+.modal .container {
+  padding: 16px;
+  text-align: center;
+}
+
+.modal {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(2, 2, 2, 0.4);
+  padding-top: 30vh;
+}
+
+.modal .modal-content {
+  background-color: #fefefe;
+  margin: 5% auto 15% auto;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.modal h1 {
+  color: #4e989a;
+  margin-bottom: 25px;
+}
+
+.modal .clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+@media screen and (max-width: 300px) {
+  .modal .cancelbtn,
+  .modal .deletebtn {
+    width: 100%;
+  }
+}

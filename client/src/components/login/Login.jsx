@@ -5,17 +5,17 @@ import './Login.css';
 
 const Login = ({ handleSubmit, handleChange }) => {
   return (
-    <main className='login'>
+    <main className="login">
       <form onSubmit={handleSubmit}>
         <Title className="title" value={'Log in'} />
         <div className="pairs">
-          <Input name={'Username'} type={'text'} value={handleChange} />
+          <Input name="username" type={'text'} />
         </div>
         <div className="pairs">
-          <Input name={'Email'} type={'text'} value={handleChange} />
+          <Input name="email" type="email" />
         </div>
         <div className="pairs">
-          <Input name={'Password'} type={'text'} value={handleChange} />
+          <Input name="password" type="password" />
         </div>
         <Button className="button" children={'Log In'} />
       </form>

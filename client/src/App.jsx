@@ -9,7 +9,8 @@ class App extends Component {
   state = {
     searchTerm: '',
     navShow: false,
-    popUpDisplay: true,
+    popUpDisplay: false,
+    errMessage: '',
     products: [],
     cart: localStorage.getItem('cart')
       ? JSON.parse(localStorage.getItem('cart'))
@@ -127,6 +128,8 @@ class App extends Component {
       .catch((err) => {
         if (err.response.status === 500) {
           window.location.href = '/error';
+        } else if (err.response.status === 400) {
+          this.setState({ errMessage: err.response.data.message });
         }
       });
   };
@@ -146,12 +149,19 @@ class App extends Component {
       });
   };
 
-  handleOpenPopUp = () => this.setState({ popUpDisplay: true });
-  handleClosePopUp = () => this.setState({ popUpDisplay: false });
+  popupToggleHandler = () =>
+    this.setState((prevState) => ({ popUpDisplay: !prevState.popUpDisplay }));
 
   render() {
-    const { searchTerm, navShow, products, popUpDisplay, cart, isLoggedIn } =
-      this.state;
+    const {
+      searchTerm,
+      navShow,
+      products,
+      popUpDisplay,
+      cart,
+      isLoggedIn,
+      errMessage,
+    } = this.state;
     let numberOfProducts = cart.reduce((acc, curr) => acc + curr.quantity, 0);
 
     return (
@@ -174,8 +184,9 @@ class App extends Component {
               element={
                 <Home
                   products={products}
-                  addToCart={this.addToCart}
                   isLoggedIn={isLoggedIn}
+                  addToCart={this.addToCart}
+                  popupToggleHandler={this.popupToggleHandler}
                 />
               }
             />
@@ -211,8 +222,9 @@ class App extends Component {
         </Router>
         {popUpDisplay && (
           <AddForm
-            handleClosePopUp={this.handleClosePopUp}
             addProductHandler={this.addProductHandler}
+            popupToggleHandler={this.popupToggleHandler}
+            errMessage={errMessage}
           />
         )}
       </>

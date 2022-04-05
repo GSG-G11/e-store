@@ -6,7 +6,7 @@ import ProductCard from '../ProductCard';
 import './Home.css';
 
 const Home = (props) => {
-  const { products, addToCart, isLoggedIn } = props;
+  const { products, addToCart, isLoggedIn, popupToggleHandler } = props;
   const navigate = useNavigate();
 
   return (
@@ -16,11 +16,7 @@ const Home = (props) => {
         label="Products"
         button={isLoggedIn ? 'Add Product' : 'Go To Cart'}
         icon="fa-solid fa-angle-right"
-        onClick={
-          !isLoggedIn
-            ? () => navigate('/cart')
-            : () => 'your display function here'
-        }
+        onClick={!isLoggedIn ? () => navigate('/cart') : popupToggleHandler}
       />
 
       <div className="container">

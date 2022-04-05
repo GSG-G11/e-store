@@ -234,7 +234,7 @@ class App extends Component {
 
           <Routes>
             <Route
-              path='/'
+              path="/"
               element={
                 <Home
                   products={products}
@@ -248,7 +248,7 @@ class App extends Component {
             />
             Car
             <Route
-              path='/cart'
+              path="/cart"
               element={
                 <Cart
                   cart={cart}
@@ -260,7 +260,7 @@ class App extends Component {
               }
             />
             <Route
-              path='/login'
+              path="/login"
               element={
                 <Login
                   handleChange={this.handleChange}
@@ -269,11 +269,11 @@ class App extends Component {
               }
             />
             <Route
-              path='product/:id'
+              path="product/:id"
               element={<ProductDetails addToCart={this.addToCart} />}
             />
-            <Route path='/error' element={<serverError />} />
-            <Route path='*' element={<notFound />} />
+            <Route path="/error" element={<serverError />} />
+            <Route path="*" element={<notFound />} />
           </Routes>
         </Router>
         {popUpDisplay && (

@@ -34,13 +34,6 @@ class App extends Component {
     localStorage.setItem('isLoggedIn', false);
     window.location.href = '/';
   };
-  handleSearch = ({ key }) => {
-    const { searchTerm } = this.state;
-
-    if (key === 'Enter' && searchTerm !== '') {
-      // Do Stuff...
-    }
-  };
 
   navToggleHandler = () => {
     this.setState((prevState) => ({ navShow: !prevState.navShow }));
@@ -172,7 +165,6 @@ class App extends Component {
             navShow={navShow}
             navToggleHandler={this.navToggleHandler}
             handleChange={this.handleChange}
-            handleSearch={this.handleSearch}
             numberOfProducts={numberOfProducts}
             isLoggedIn={isLoggedIn}
             handleLogout={this.handleLogout}
@@ -185,6 +177,7 @@ class App extends Component {
                 <Home
                   products={products}
                   isLoggedIn={isLoggedIn}
+                  searchTerm={searchTerm}
                   addToCart={this.addToCart}
                   popupToggleHandler={this.popupToggleHandler}
                 />

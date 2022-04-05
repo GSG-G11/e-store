@@ -6,8 +6,14 @@ import ProductCard from '../ProductCard';
 import './Home.css';
 
 const Home = (props) => {
-  const { products, addToCart, isLoggedIn, popupToggleHandler } = props;
+  const { products, addToCart, searchTerm, isLoggedIn, popupToggleHandler } =
+    props;
   const navigate = useNavigate();
+
+  const filteredData = products.filter((product) => {
+    if (searchTerm.length === 0) return true;
+    return product.name.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   return (
     <>
@@ -26,8 +32,8 @@ const Home = (props) => {
 
         {products.length ? (
           <div className="products">
-            {products.length &&
-              products.map((product) => {
+            {filteredData.length ? (
+              filteredData.map((product) => {
                 const { id, img, category, name, price } = product;
 
                 return (
@@ -42,7 +48,10 @@ const Home = (props) => {
                     addToCart={addToCart}
                   />
                 );
-              })}
+              })
+            ) : (
+              <div>No Items Found</div>
+            )}
           </div>
         ) : (
           <Loader />

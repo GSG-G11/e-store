@@ -7,7 +7,6 @@ const Navbar = (props) => {
   const {
     searchTerm,
     handleChange,
-    handleSearch,
     navShow,
     navToggleHandler,
     numberOfProducts,
@@ -33,7 +32,7 @@ const Navbar = (props) => {
               name="searchTerm"
               value={searchTerm}
               onChange={handleChange}
-              onKeyPress={handleSearch}
+              onFocus={()=> navigate('/')}
             />
           </div>
           <Icon

@@ -11,6 +11,8 @@ const Navbar = (props) => {
     navShow,
     navToggleHandler,
     numberOfProducts,
+    isLoggedIn,
+    handleLogout,
   } = props;
 
   const navigate = useNavigate();
@@ -52,10 +54,14 @@ const Navbar = (props) => {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Button
-                children="Login"
-                onClick={() => navigate('/login')}
-              ></Button>
+              {!isLoggedIn ? (
+                <Button
+                  children="Login"
+                  onClick={() => navigate('/login')}
+                ></Button>
+              ) : (
+                <Button onClick={handleLogout}>logout</Button>
+              )}
             </li>
           </ul>
         </div>

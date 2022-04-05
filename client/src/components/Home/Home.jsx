@@ -13,6 +13,7 @@ const Home = (props) => {
     isLoggedIn,
     popupToggleHandler,
     editProductHandler,
+    deleteProductHandler,
   } = props;
   const navigate = useNavigate();
 
@@ -53,6 +54,7 @@ const Home = (props) => {
                     price={price}
                     addToCart={addToCart}
                     editProductHandler={editProductHandler}
+                    deleteProductHandler={deleteProductHandler}
                   />
                 );
               })

@@ -13,6 +13,7 @@ const ProductCard = (props) => {
     addToCart,
     isLoggedIn,
     editProductHandler,
+    deleteProductHandler,
   } = props;
 
   return (
@@ -49,7 +50,7 @@ const ProductCard = (props) => {
                 />
                 <Icon
                   className="fas fa-trash"
-                  onClick={() => 'delete function goes here'}
+                  onClick={() => deleteProductHandler(id)}
                 />
               </div>
             )}

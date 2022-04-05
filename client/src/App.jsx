@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
-import { Navbar, Login, Home, AddForm, ProductDetails } from './components';
+import { Navbar, Login, Home, AddForm, ProductDetails, Confirmation } from './components';
 import Cart from './components/cart/Cart';
 import './index.css';
 
@@ -10,6 +10,7 @@ class App extends Component {
     searchTerm: '',
     navShow: false,
     popUpDisplay: false,
+    confirmDisplay: false,
     errMessage: '',
     products: [],
     cart: JSON.parse(localStorage.cart) || [],
@@ -164,13 +165,47 @@ class App extends Component {
     });
   };
 
+  deleteItem = (id) => {
+    axios
+      .delete(`/api/v1/products/${id}`)
+      .then(() => {
+        let products = this.state.products.filter((item) => item.id !== id);
+        this.setState({ products });
+      })
+      .catch((err) => console.log(err));
+  };
+  handleIsEditable = ({ target: { id } }) => {
+    const { editable, products } = this.state;
+    const editableProduct = products.filter((product) => product.id === +id);
+    this.setState({
+      editable: editableProduct[0].id === +id ? [!editable[0], +id] : null,
+    });
+  };
+
+  deleteProductHandler = (productId) => {
+    const { products } = this.state
+    axios
+      .delete(`http://localhost:5000/api/v1/product/${productId}`)
+      .then(() => {
+        let filteredData = products.filter((item) => item.id !== productId);
+        this.setState({ filteredData, confirmDisplay: true });
+      })
+      .catch((err) => {
+        if (err.response.status === 500) {
+          window.location.href = '/error';
+        } else if (err.response.status === 400) {
+          this.setState({ errMessage: err.response.data.message });
+        }
+      });
+  }
+  
   componentDidMount = () => {
     axios
-      .get('http://localhost:5000/api/v1/products')
-      .then((res) => {
-        if (res.status === 200) {
-          this.setState({ products: res.data.products });
-        }
+    .get('http://localhost:5000/api/v1/products')
+    .then((res) => {
+      if (res.status === 200) {
+        this.setState({ products: res.data.products });
+      }
       })
       .catch((err) => {
         if (err.response.status === 500) {
@@ -178,7 +213,13 @@ class App extends Component {
         }
       });
   };
-
+  
+  popupConfirmHandler = () => {
+    this.setState((previousState) => ({
+      confirmDisplay: !previousState.confirmDisplay,
+    }));
+  };
+  
   popupToggleHandler = (cancel) => {
     this.setState((prevState) => ({
       popUpDisplay: !prevState.popUpDisplay,
@@ -208,6 +249,7 @@ class App extends Component {
       isLoggedIn,
       errMessage,
       curProduct,
+      confirmDisplay,
     } = this.state;
     let numberOfProducts = cart.reduce((acc, curr) => acc + curr.quantity, 0);
 
@@ -235,6 +277,7 @@ class App extends Component {
                   addToCart={this.addToCart}
                   popupToggleHandler={this.popupToggleHandler}
                   editProductHandler={this.editProductHandler}
+                  deleteProductHandler={this.deleteProductHandler}
                 />
               }
             />
@@ -275,6 +318,12 @@ class App extends Component {
             updateCurProduct={this.updateCurProduct}
             errMessage={errMessage}
             curProduct={curProduct}
+          />
+        )}
+        {confirmDisplay && (
+          <Confirmation
+          popupConfirmHandler={this.popupConfirmHandler}
+          curProduct={curProduct}
           />
         )}
       </>

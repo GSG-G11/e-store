@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
-import { Icon } from '../generic';
+import { Link, useNavigate } from 'react-router-dom';
+import { Icon, Button } from '../generic';
 import './Navbar.css';
 import logo from '../../images/logo.png';
 
@@ -10,7 +10,10 @@ const Navbar = (props) => {
     handleSearch,
     navShow,
     navToggleHandler,
+    numberOfProducts,
   } = props;
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -39,14 +42,20 @@ const Navbar = (props) => {
           <ul className={`nav-controls ${navShow && 'active'}`}>
             <li>
               <Link to="/cart">
-                <Icon className="fa-solid fa-cart-shopping"></Icon>
+                <div className="cart-icon-wrapper">
+                  <Icon className="fa-solid fa-cart-shopping"></Icon>
+                  <span> {numberOfProducts}</span>
+                </div>
               </Link>
             </li>
             <li>
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to='/login'>Login</Link>
+              <Button
+                children="Login"
+                onClick={() => navigate('/login')}
+              ></Button>
             </li>
           </ul>
         </div>

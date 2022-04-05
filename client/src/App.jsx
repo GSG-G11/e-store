@@ -1,12 +1,19 @@
 import { Component } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Navbar, ProductDetails } from './components';
+import axios from 'axios';
+import { Navbar, Login, Home, AddForm, ProductDetails } from './components';
+import Cart from './components/cart/Cart';
 import './index.css';
 
 class App extends Component {
   state = {
     searchTerm: '',
     navShow: false,
+    popUpDisplay: false,
+    products: [],
+    cart: localStorage.getItem('cart')
+      ? JSON.parse(localStorage.getItem('cart'))
+      : [],
   };
 
   handleChange = ({ target: { name, value } }) => {
@@ -25,8 +32,76 @@ class App extends Component {
     this.setState((prevState) => ({ navShow: !prevState.navShow }));
   };
 
+  addToCart = (newProduct) => {
+    let { cart } = this.state;
+    for (let i = 0; i < cart.length; i++) {
+      if (cart[i].id === newProduct.id) {
+        cart[i].quantity += 1;
+        cart[i].totalPrice += cart[i].price;
+        this.setState({ cart });
+        localStorage.setItem('cart', JSON.stringify(cart));
+        return;
+      }
+    }
+    cart.push({ ...newProduct, quantity: 1, totalPrice: newProduct.price });
+    this.setState({ cart });
+    localStorage.setItem('cart', JSON.stringify(cart));
+  };
+
+  decrementFromCart = (id) => {
+    let { cart } = this.state;
+    for (let i = 0; i < cart.length; i++) {
+      if (cart[i].id === id) {
+        cart[i].quantity -= 1;
+        cart[i].totalPrice -= cart[i].price;
+        if (cart[i].quantity === 0) {
+          cart.splice(i, 1);
+        }
+        this.setState({ cart });
+        localStorage.setItem('cart', JSON.stringify(cart));
+        return;
+      }
+    }
+  };
+
+  removeFromCart = (id) => {
+    let { cart } = this.state;
+    for (let i = 0; i < cart.length; i++) {
+      if (cart[i].id === id) {
+        cart.splice(i, 1);
+        this.setState({ cart });
+        localStorage.setItem('cart', JSON.stringify(cart));
+        return;
+      }
+    }
+  };
+
+  clearCart = () => {
+    this.setState({ cart: [] });
+    localStorage.setItem('cart', JSON.stringify([]));
+  };
+
+  componentDidMount = () => {
+    axios
+      .get('http://localhost:5000/api/v1/products')
+      .then((res) => {
+        if (res.status === 200) {
+          this.setState({ products: res.data.products });
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 500) {
+          window.location.href = '/error';
+        }
+      });
+  };
+
+  handleOpenPopUp = () => this.setState({ popUpDisplay: true });
+  handleClosePopUp = () => this.setState({ popUpDisplay: false });
+
   render() {
-    const { searchTerm, navShow } = this.state;
+    const { searchTerm, navShow, products, popUpDisplay, cart } = this.state;
+    let numberOfProducts = cart.reduce((acc, curr) => acc + curr.quantity, 0);
 
     return (
       <>
@@ -37,15 +112,37 @@ class App extends Component {
             navToggleHandler={this.navToggleHandler}
             handleChange={this.handleChange}
             handleSearch={this.handleSearch}
+            numberOfProducts={numberOfProducts}
           />
-          
+
           <Routes>
-            <Route path="/" element="home" />
-            <Route path="/cart" element="Cart" />
-            <Route path="/login" element="login" />
-            <Route path="/product" element={<ProductDetails/>}/>
+            <Route
+              path="/"
+              element={<Home products={products} addToCart={this.addToCart} />}
+            />
+            Car
+            <Route
+              path="/cart"
+              element={
+                <Cart
+                  cart={cart}
+                  decrement={this.decrementFromCart}
+                  increment={this.addToCart}
+                  removeFromCart={this.removeFromCart}
+                  clearCart={this.clearCart}
+                />
+              }
+            />
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="product/:id"
+              element={<ProductDetails addToCart={this.addToCart} />}
+            />
+            <Route path="/error" element={'Server Error'} />
+            <Route path="*" element={'Page Not Found'} />
           </Routes>
         </Router>
+        {popUpDisplay && <AddForm handleClosePopUp={this.handleClosePopUp} />}
       </>
     );
   }

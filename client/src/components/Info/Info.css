@@ -1,0 +1,35 @@
+.info-card {
+  margin-top: 120px;
+  margin-bottom: 30px;
+  background-color: #4e989a;
+  padding: 20px 0;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.info-card .info-card-title {
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-bottom: 50px;
+}
+
+.info-card .card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info-card .card-footer button {
+  display: flex;
+  border: 2px solid white;
+  border-radius: 5px;
+  align-items: center;
+  width: auto;
+}
+
+.info-card .card-footer button .icon-container {
+  margin-left: 10px;
+  width: 1.3rem;
+  height: 1.3rem;
+  background-color: transparent;
+}

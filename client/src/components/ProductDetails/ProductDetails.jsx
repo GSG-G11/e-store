@@ -1,23 +1,26 @@
-import Button from '../generic/Button';
-import './ProductDetails.css';
+import { useNavigate, useParams } from 'react-router-dom';
+import Info from '../Info';
+import Product from '../Product';
 
-const ProductDetails = ({ productData }, AddToCard) => {
-    const { id, name, img, category, price, description } = productData;
+const ProductDetails = (props) => {
+  const navigate = useNavigate();
+  const { id: productId } = useParams();
+  const { addToCart } = props;
 
-    return (
-        <div className='Product-container'>
-            <div className='image-container'>
-                <img className='image-class' src={img} alt={name} />
-            </div>
-            <div className='detail-container'>
-                <h3 className='name'> {name} </h3>
-                <p className='price'>{price}</p>
-                <p >{category}</p>
-                <p className='description'>{description}</p>
+  return (
+    <>
+      <Info
+        title="Product Details"
+        label="Product"
+        button="Continue Shopping"
+        icon="fa-solid fa-angle-right"
+        onClick={() => navigate('/')}
+      />
+      <div className="container">
+        <Product productId={productId} addToCart={addToCart} />
+      </div>
+    </>
+  );
+};
 
-                <Button onClick={AddToCard} />
-            </div>
-        </div>
-    )
-}
 export default ProductDetails;

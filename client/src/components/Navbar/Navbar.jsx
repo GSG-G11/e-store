@@ -42,14 +42,16 @@ const Navbar = (props) => {
             onClick={navToggleHandler}
           ></Icon>
           <ul className={`nav-controls ${navShow && 'active'}`}>
-            <li>
-              <Link to="/cart">
-                <div className="cart-icon-wrapper">
-                  <Icon className="fa-solid fa-cart-shopping"></Icon>
-                  <span> {numberOfProducts}</span>
-                </div>
-              </Link>
-            </li>
+            {!isLoggedIn && (
+              <li>
+                <Link to="/cart">
+                  <div className="cart-icon-wrapper">
+                    <Icon className="fa-solid fa-cart-shopping"></Icon>
+                    <span> {numberOfProducts}</span>
+                  </div>
+                </Link>
+              </li>
+            )}
             <li>
               <Link to="/">Home</Link>
             </li>

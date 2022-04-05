@@ -6,8 +6,14 @@ import ProductCard from '../ProductCard';
 import './Home.css';
 
 const Home = (props) => {
-  const { products, addToCart, searchTerm, isLoggedIn, popupToggleHandler } =
-    props;
+  const {
+    products,
+    addToCart,
+    searchTerm,
+    isLoggedIn,
+    popupToggleHandler,
+    editProductHandler,
+  } = props;
   const navigate = useNavigate();
 
   const filteredData = products.filter((product) => {
@@ -46,6 +52,7 @@ const Home = (props) => {
                     title={name}
                     price={price}
                     addToCart={addToCart}
+                    editProductHandler={editProductHandler}
                   />
                 );
               })

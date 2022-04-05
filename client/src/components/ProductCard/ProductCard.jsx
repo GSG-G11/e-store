@@ -4,7 +4,16 @@ import { Icon } from '../generic';
 import './ProductCard.css';
 
 const ProductCard = (props) => {
-  const { id, image, category, title, price, addToCart, isLoggedIn } = props;
+  const {
+    id,
+    image,
+    category,
+    title,
+    price,
+    addToCart,
+    isLoggedIn,
+    editProductHandler,
+  } = props;
 
   return (
     <>
@@ -36,7 +45,7 @@ const ProductCard = (props) => {
               <div className="seller-icons">
                 <Icon
                   className="fas fa-edit"
-                  onClick={() => 'edit function goes here'}
+                  onClick={() => editProductHandler(id)}
                 />
                 <Icon
                   className="fas fa-trash"

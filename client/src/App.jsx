@@ -12,12 +12,9 @@ class App extends Component {
     popUpDisplay: false,
     errMessage: '',
     products: [],
-    cart: localStorage.getItem('cart')
-      ? JSON.parse(localStorage.getItem('cart'))
-      : [],
-    isLoggedIn: localStorage.getItem('isLoggedIn')
-      ? JSON.parse(localStorage.getItem('isLoggedIn'))
-      : false,
+    cart: JSON.parse(localStorage.cart) || [],
+    isLoggedIn: JSON.parse(localStorage.isLoggedIn) || false,
+    curProduct: { id: '', name: '', description: '', category: '', photo: '' },
   };
 
   handleChange = ({ target: { name, value } }) => {
@@ -88,7 +85,7 @@ class App extends Component {
     localStorage.setItem('cart', JSON.stringify([]));
   };
 
-  addProductHandler = (e) => {
+  addProductHandler = (e, productId = 0) => {
     e.preventDefault();
     const { name, price, description, photo, category } = e.target;
     const data = {
@@ -108,23 +105,63 @@ class App extends Component {
     )
       return;
 
-    axios
-      .post('http://localhost:5000/api/v1/product', data)
-      .then((res) => {
-        this.setState((prevState) => {
-          return {
-            products: [...prevState.products, res.data.product],
-            popUpDisplay: false,
-          };
+    if (!productId) {
+      axios
+        .post('http://localhost:5000/api/v1/product', data)
+        .then((res) => {
+          this.setState((prevState) => {
+            return {
+              products: [...prevState.products, res.data.product],
+              popUpDisplay: false,
+            };
+          });
+        })
+        .catch((err) => {
+          if (err.response.status === 500) {
+            window.location.href = '/error';
+          } else if (err.response.status === 400) {
+            this.setState({ errMessage: err.response.data.message });
+          }
         });
-      })
-      .catch((err) => {
-        if (err.response.status === 500) {
-          window.location.href = '/error';
-        } else if (err.response.status === 400) {
-          this.setState({ errMessage: err.response.data.message });
-        }
-      });
+    } else {
+      axios
+        .put(`http://localhost:5000/api/v1/product/${productId}`, data)
+        .then((res) => {
+          const editedProduct = res.data.product;
+          this.setState((prevState) => {
+            return {
+              products: prevState.products.map((product) => {
+                return product.id !== editedProduct.id
+                  ? product
+                  : editedProduct;
+              }),
+              popUpDisplay: false,
+            };
+          });
+        })
+        .catch((err) => {
+          if (err.response.status === 500) {
+            window.location.href = '/error';
+          } else if (err.response.status === 400) {
+            this.setState({ errMessage: err.response.data.message });
+          }
+        });
+    }
+  };
+
+  editProductHandler = (productId) => {
+    this.popupToggleHandler();
+    const { products } = this.state;
+
+    const itemToEdit = products.find((product) => product.id === productId);
+    const photo = itemToEdit.img;
+    this.setState({ curProduct: { ...itemToEdit, photo } });
+  };
+
+  updateCurProduct = ({ target: { name, value } }) => {
+    this.setState((prevState) => {
+      return { curProduct: { ...prevState.curProduct, [name]: value } };
+    });
   };
 
   componentDidMount = () => {
@@ -142,8 +179,24 @@ class App extends Component {
       });
   };
 
-  popupToggleHandler = () =>
-    this.setState((prevState) => ({ popUpDisplay: !prevState.popUpDisplay }));
+  popupToggleHandler = (cancel) => {
+    this.setState((prevState) => ({
+      popUpDisplay: !prevState.popUpDisplay,
+      errMessage: '',
+    }));
+
+    if (cancel) {
+      this.setState({
+        curProduct: {
+          id: '',
+          name: '',
+          description: '',
+          category: '',
+          photo: '',
+        },
+      });
+    }
+  };
 
   render() {
     const {
@@ -154,6 +207,7 @@ class App extends Component {
       cart,
       isLoggedIn,
       errMessage,
+      curProduct,
     } = this.state;
     let numberOfProducts = cart.reduce((acc, curr) => acc + curr.quantity, 0);
 
@@ -180,6 +234,7 @@ class App extends Component {
                   searchTerm={searchTerm}
                   addToCart={this.addToCart}
                   popupToggleHandler={this.popupToggleHandler}
+                  editProductHandler={this.editProductHandler}
                 />
               }
             />
@@ -217,7 +272,9 @@ class App extends Component {
           <AddForm
             addProductHandler={this.addProductHandler}
             popupToggleHandler={this.popupToggleHandler}
+            updateCurProduct={this.updateCurProduct}
             errMessage={errMessage}
+            curProduct={curProduct}
           />
         )}
       </>

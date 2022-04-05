@@ -33,7 +33,7 @@ const ProductCard = (props) => {
                 }
               ></Icon>
             ) : (
-              <div class="seller-icons">
+              <div className="seller-icons">
                 <Icon
                   className="fas fa-edit"
                   onClick={() => 'edit function goes here'}

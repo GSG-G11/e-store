@@ -113,7 +113,8 @@ class App extends Component {
   handleClosePopUp = () => this.setState({ popUpDisplay: false });
 
   render() {
-    const { searchTerm, navShow, products, popUpDisplay, cart } = this.state;
+    const { searchTerm, navShow, products, popUpDisplay, cart, isLoggedIn } =
+      this.state;
     let numberOfProducts = cart.reduce((acc, curr) => acc + curr.quantity, 0);
 
     return (
@@ -126,14 +127,20 @@ class App extends Component {
             handleChange={this.handleChange}
             handleSearch={this.handleSearch}
             numberOfProducts={numberOfProducts}
-            isLoggedIn={this.state.isLoggedIn}
+            isLoggedIn={isLoggedIn}
             handleLogout={this.handleLogout}
           />
 
           <Routes>
             <Route
               path="/"
-              element={<Home products={products} addToCart={this.addToCart} />}
+              element={
+                <Home
+                  products={products}
+                  addToCart={this.addToCart}
+                  isLoggedIn={isLoggedIn}
+                />
+              }
             />
             Car
             <Route

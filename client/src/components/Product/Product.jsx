@@ -13,7 +13,7 @@ class Product extends Component {
     const { productId } = this.props;
 
     axios
-      .get(`http://localhost:5000/api/v1/product/${productId}`)
+      .get(`/api/v1/product/${productId}`)
       .then((res) => {
         if (!res.data.product.length) window.location.href = '/not-found';
         if (res.status === 200) {

@@ -25,8 +25,10 @@ class App extends Component {
     confirmDisplay: false,
     errMessage: '',
     products: [],
-    cart: JSON.parse(localStorage.cart) || [],
-    isLoggedIn: JSON.parse(localStorage.isLoggedIn) || false,
+    cart: localStorage.cart ? JSON.parse(localStorage.cart) : [],
+    isLoggedIn: localStorage.isLoggedIn
+      ? JSON.parse(localStorage.isLoggedIn)
+      : false,
     curProduct: { id: '', name: '', description: '', category: '', photo: '' },
     isLoading: true,
   };
@@ -136,7 +138,7 @@ class App extends Component {
 
     if (!productId) {
       axios
-        .post('http://localhost:5000/api/v1/product', data)
+        .post('/api/v1/product', data)
         .then((res) => {
           this.setState((prevState) => {
             return {
@@ -154,7 +156,7 @@ class App extends Component {
         });
     } else {
       axios
-        .put(`http://localhost:5000/api/v1/product/${productId}`, data)
+        .put(`/api/v1/product/${productId}`, data)
         .then((res) => {
           const editedProduct = res.data.product;
           this.setState((prevState) => {
@@ -204,7 +206,7 @@ class App extends Component {
   deleteProductHandler = (productId) => {
     console.log(productId);
     axios
-      .delete(`http://localhost:5000/api/v1/product/${productId}`)
+      .delete(`/api/v1/product/${productId}`)
       .then(() => {
         this.setState((prevState) => ({
           products: prevState.products.filter(
@@ -224,7 +226,7 @@ class App extends Component {
 
   componentDidMount = () => {
     axios
-      .get('http://localhost:5000/api/v1/products')
+      .get('/api/v1/products')
       .then((res) => {
         if (res.status === 200) {
           this.setState({ products: res.data.products, isLoading: false });

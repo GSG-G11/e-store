@@ -54,6 +54,7 @@
 
 .addProduct textarea {
   height: 120px;
+  resize: none;
 }
 
 .addProduct .flex {

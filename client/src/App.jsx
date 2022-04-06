@@ -8,8 +8,9 @@ import {
   AddForm,
   ProductDetails,
   Confirmation,
+  Cart,
+  Err,
 } from './components';
-import Cart from './components/cart/Cart';
 import './index.css';
 
 class App extends Component {
@@ -326,8 +327,9 @@ class App extends Component {
                 />
               }
             />
-            <Route path="/error" element={'Server Error'} />
-            <Route path="*" element={'Page Not Found'} />
+            <Route path="/error" element={<Err status={500} />} />
+            <Route path="/not-found" element={<Err status={404} />} />
+            <Route path="*" element={<Err status={404} />} />
           </Routes>
         </Router>
         {popUpDisplay && (

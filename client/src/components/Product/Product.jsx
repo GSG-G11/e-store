@@ -15,6 +15,7 @@ class Product extends Component {
     axios
       .get(`http://localhost:5000/api/v1/product/${productId}`)
       .then((res) => {
+        if (!res.data.product.length) window.location.href = '/not-found';
         if (res.status === 200) {
           this.setState({ curProduct: res.data.product[0] });
         }

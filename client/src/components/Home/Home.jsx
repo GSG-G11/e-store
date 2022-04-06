@@ -55,18 +55,20 @@ const Home = (props) => {
         <h1 className="home-heading">
           <span>Top Selling Products</span>
         </h1>
-        <Select
-          name="categoryTerm"
-          value={categoryTerm}
-          children={category}
-          onChange={handleChange}
-        />
-        <Select
-          name="priceTerm"
-          value={priceTerm}
-          children={price}
-          onChange={handleChange}
-        />
+        <div className="filters">
+          <Select
+            name="categoryTerm"
+            value={categoryTerm}
+            children={category}
+            onChange={handleChange}
+          />
+          <Select
+            name="priceTerm"
+            value={priceTerm}
+            children={price}
+            onChange={handleChange}
+          />
+        </div>
         {!isLoading ? (
           <div className="products">
             {filteredData.length ? (

@@ -1,23 +1,24 @@
-import Input from '../generic/Input';
 import Button from '../generic/Button';
 import Title from '../generic/Title';
-import './Login.css';
 
 const Login = ({ handleSubmit, handleChange }) => {
   return (
-    <main className="login">
+    <main className="addProduct">
       <form onSubmit={handleSubmit}>
         <Title className="title" value={'Log in'} />
         <div className="pairs">
-          <Input name="username" type={'text'} />
+          <label htmlFor="username">Username</label>
+          <input type="text" name="username" />
         </div>
         <div className="pairs">
-          <Input name="email" type="email" />
+          <label htmlFor="email">Email</label>
+          <input type="email" name="email" />
         </div>
         <div className="pairs">
-          <Input name="password" type="password" />
+          <label htmlFor="password">Password</label>
+          <input type="password" name="password" />
         </div>
-        <Button className="button" children={'Log In'} />
+        <Button className="button" children="Log In" />
       </form>
     </main>
   );

@@ -15,6 +15,7 @@ class Product extends Component {
     axios
       .get(`http://localhost:5000/api/v1/product/${productId}`)
       .then((res) => {
+        if (!res.data.product.length) window.location.href = '/not-found';
         if (res.status === 200) {
           this.setState({ curProduct: res.data.product[0] });
         }
@@ -31,7 +32,7 @@ class Product extends Component {
       state: {
         curProduct: { id, name, img, category, price, description },
       },
-      props: { addToCart },
+      props: { addToCart, isLoggedIn },
     } = this;
 
     return (
@@ -48,12 +49,14 @@ class Product extends Component {
                 <span className="category">{category}</span>
                 <span className="price">${price}</span>
               </div>
-              <Button
-                onClick={() => addToCart({ id, name, img, price: +price })}
-              >
-                Add To Cart
-                <i className="fa-solid fa-cart-plus"></i>
-              </Button>
+              {!isLoggedIn && (
+                <Button
+                  onClick={() => addToCart({ id, name, img, price: +price })}
+                >
+                  Add To Cart
+                  <i className="fa-solid fa-cart-plus"></i>
+                </Button>
+              )}
             </div>
           </div>
         ) : (

@@ -1,3 +1,15 @@
+.modal {
+  padding: 20px;
+}
+
+.modal .container {
+  background-color: white;
+  width: 600px;
+  max-width: 100%;
+  margin-inline: auto;
+  border-radius: 5px;
+}
+
 .modal button {
   background-color: #04aa6d;
   color: white;
@@ -7,6 +19,7 @@
   cursor: pointer;
   width: 100%;
   opacity: 0.9;
+  border-radius: 5px;
 }
 
 .modal button:hover {
@@ -58,8 +71,18 @@
   margin-bottom: 25px;
 }
 
+.modal .clearfix {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal .clearfix button:first-child {
+  margin-right: 10px;
+}
+
 .modal .clearfix::after {
-  content: "";
+  content: '';
   clear: both;
   display: table;
 }

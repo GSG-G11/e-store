@@ -1,7 +1,14 @@
 import { Component } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
-import { Navbar, Login, Home, AddForm, ProductDetails, Confirmation } from './components';
+import {
+  Navbar,
+  Login,
+  Home,
+  AddForm,
+  ProductDetails,
+  Confirmation,
+} from './components';
 import Cart from './components/cart/Cart';
 import './index.css';
 
@@ -16,6 +23,7 @@ class App extends Component {
     cart: JSON.parse(localStorage.cart) || [],
     isLoggedIn: JSON.parse(localStorage.isLoggedIn) || false,
     curProduct: { id: '', name: '', description: '', category: '', photo: '' },
+    isLoading: true,
   };
 
   handleChange = ({ target: { name, value } }) => {
@@ -183,12 +191,16 @@ class App extends Component {
   };
 
   deleteProductHandler = (productId) => {
-    const { products } = this.state
+    console.log(productId);
     axios
       .delete(`http://localhost:5000/api/v1/product/${productId}`)
       .then(() => {
-        let filteredData = products.filter((item) => item.id !== productId);
-        this.setState({ filteredData, confirmDisplay: true });
+        this.setState((prevState) => ({
+          products: prevState.products.filter(
+            (product) => product.id !== productId
+          ),
+          confirmDisplay: false,
+        }));
       })
       .catch((err) => {
         if (err.response.status === 500) {
@@ -197,15 +209,15 @@ class App extends Component {
           this.setState({ errMessage: err.response.data.message });
         }
       });
-  }
-  
+  };
+
   componentDidMount = () => {
     axios
-    .get('http://localhost:5000/api/v1/products')
-    .then((res) => {
-      if (res.status === 200) {
-        this.setState({ products: res.data.products });
-      }
+      .get('http://localhost:5000/api/v1/products')
+      .then((res) => {
+        if (res.status === 200) {
+          this.setState({ products: res.data.products, isLoading: false });
+        }
       })
       .catch((err) => {
         if (err.response.status === 500) {
@@ -213,13 +225,14 @@ class App extends Component {
         }
       });
   };
-  
-  popupConfirmHandler = () => {
+
+  popupConfirmHandler = (id) => {
     this.setState((previousState) => ({
       confirmDisplay: !previousState.confirmDisplay,
+      curProduct: { ...previousState.curProduct, id },
     }));
   };
-  
+
   popupToggleHandler = (cancel) => {
     this.setState((prevState) => ({
       popUpDisplay: !prevState.popUpDisplay,
@@ -250,6 +263,7 @@ class App extends Component {
       errMessage,
       curProduct,
       confirmDisplay,
+      isLoading,
     } = this.state;
     let numberOfProducts = cart.reduce((acc, curr) => acc + curr.quantity, 0);
 
@@ -274,10 +288,12 @@ class App extends Component {
                   products={products}
                   isLoggedIn={isLoggedIn}
                   searchTerm={searchTerm}
+                  isLoading={isLoading}
                   addToCart={this.addToCart}
                   popupToggleHandler={this.popupToggleHandler}
                   editProductHandler={this.editProductHandler}
                   deleteProductHandler={this.deleteProductHandler}
+                  popupConfirmHandler={this.popupConfirmHandler}
                 />
               }
             />
@@ -305,7 +321,12 @@ class App extends Component {
             />
             <Route
               path="product/:id"
-              element={<ProductDetails addToCart={this.addToCart} />}
+              element={
+                <ProductDetails
+                  addToCart={this.addToCart}
+                  isLoggedIn={isLoggedIn}
+                />
+              }
             />
             <Route path="/error" element={'Server Error'} />
             <Route path="*" element={'Page Not Found'} />
@@ -322,8 +343,9 @@ class App extends Component {
         )}
         {confirmDisplay && (
           <Confirmation
-          popupConfirmHandler={this.popupConfirmHandler}
-          curProduct={curProduct}
+            popupConfirmHandler={this.popupConfirmHandler}
+            curProduct={curProduct}
+            deleteProductHandler={this.deleteProductHandler}
           />
         )}
       </>

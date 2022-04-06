@@ -14,6 +14,8 @@ const Home = (props) => {
     popupToggleHandler,
     editProductHandler,
     deleteProductHandler,
+    popupConfirmHandler,
+    isLoading,
   } = props;
   const navigate = useNavigate();
 
@@ -37,7 +39,7 @@ const Home = (props) => {
           <span>Top Selling Products</span>
         </h1>
 
-        {products.length ? (
+        {!isLoading ? (
           <div className="products">
             {filteredData.length ? (
               filteredData.map((product) => {
@@ -55,6 +57,7 @@ const Home = (props) => {
                     addToCart={addToCart}
                     editProductHandler={editProductHandler}
                     deleteProductHandler={deleteProductHandler}
+                    popupConfirmHandler={popupConfirmHandler}
                   />
                 );
               })

@@ -8,6 +8,8 @@ import './index.css';
 class App extends Component {
   state = {
     searchTerm: '',
+    categoryTerm: 'All',
+    priceTerm: 'High to Low',
     navShow: false,
     popUpDisplay: false,
     confirmDisplay: false,
@@ -20,6 +22,7 @@ class App extends Component {
 
   handleChange = ({ target: { name, value } }) => {
     this.setState({ [name]: value });
+    console.log(this.state.categoryTerm);
   };
   handleLogin = (e) => {
     e.preventDefault();
@@ -182,7 +185,9 @@ class App extends Component {
     });
   };
 
-  deleteProductHandler = (productId) => {
+  deleteProductHandler = (productId, e) => {
+    // e.preventDefault()
+    console.log(e, productId);
     const { products } = this.state
     axios
       .delete(`http://localhost:5000/api/v1/product/${productId}`)
@@ -192,7 +197,7 @@ class App extends Component {
       })
       .catch((err) => {
         if (err.response.status === 500) {
-          window.location.href = '/error';
+         console.log(err);
         } else if (err.response.status === 400) {
           this.setState({ errMessage: err.response.data.message });
         }
@@ -246,6 +251,8 @@ class App extends Component {
       products,
       popUpDisplay,
       cart,
+      categoryTerm,
+      priceTerm,
       isLoggedIn,
       errMessage,
       curProduct,
@@ -274,7 +281,11 @@ class App extends Component {
                   products={products}
                   isLoggedIn={isLoggedIn}
                   searchTerm={searchTerm}
+                  handleChange={this.handleChange}
                   addToCart={this.addToCart}
+                  categoryTerm={categoryTerm}
+                  popupConfirmHandler={this.popupConfirmHandler}
+                  priceTerm={priceTerm}
                   popupToggleHandler={this.popupToggleHandler}
                   editProductHandler={this.editProductHandler}
                   deleteProductHandler={this.deleteProductHandler}

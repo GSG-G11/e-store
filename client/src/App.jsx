@@ -12,6 +12,8 @@ import {
   Err,
 } from './components';
 import './index.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class App extends Component {
   state = {
@@ -49,6 +51,7 @@ class App extends Component {
   };
 
   addToCart = (newProduct) => {
+    toast.success(`${newProduct.name} added to cart!`);
     let { cart } = this.state;
     for (let i = 0; i < cart.length; i++) {
       if (cart[i].id === newProduct.id) {
@@ -62,6 +65,18 @@ class App extends Component {
     cart.push({ ...newProduct, quantity: 1, totalPrice: newProduct.price });
     this.setState({ cart });
     localStorage.setItem('cart', JSON.stringify(cart));
+  };
+
+  incrementFromCart = (product) => {
+    let { cart } = this.state;
+    for (let i = 0; i < cart.length; i++) {
+      if (cart[i].id === product.id) {
+        cart[i].quantity += 1;
+        cart[i].totalPrice += cart[i].price;
+        this.setState({ cart });
+        localStorage.setItem('cart', JSON.stringify(cart));
+      }
+    }
   };
 
   decrementFromCart = (id) => {
@@ -81,6 +96,7 @@ class App extends Component {
   };
 
   removeFromCart = (id) => {
+    toast.error('Removed from cart!');
     let { cart } = this.state;
     for (let i = 0; i < cart.length; i++) {
       if (cart[i].id === id) {
@@ -93,6 +109,7 @@ class App extends Component {
   };
 
   clearCart = () => {
+    toast.error('Cart is cleared!');
     this.setState({ cart: [] });
     localStorage.setItem('cart', JSON.stringify([]));
   };
@@ -280,33 +297,39 @@ class App extends Component {
             <Route
               path="/"
               element={
-                <Home
-                  products={products}
-                  isLoggedIn={isLoggedIn}
-                  searchTerm={searchTerm}
-                  isLoading={isLoading}
-                  handleChange={this.handleChange}
-                  addToCart={this.addToCart}
-                  categoryTerm={categoryTerm}
-                  popupConfirmHandler={this.popupConfirmHandler}
-                  priceTerm={priceTerm}
-                  popupToggleHandler={this.popupToggleHandler}
-                  editProductHandler={this.editProductHandler}
-                  deleteProductHandler={this.deleteProductHandler}
-                />
+                <>
+                  <Home
+                    products={products}
+                    isLoggedIn={isLoggedIn}
+                    searchTerm={searchTerm}
+                    isLoading={isLoading}
+                    handleChange={this.handleChange}
+                    addToCart={this.addToCart}
+                    categoryTerm={categoryTerm}
+                    popupConfirmHandler={this.popupConfirmHandler}
+                    priceTerm={priceTerm}
+                    popupToggleHandler={this.popupToggleHandler}
+                    editProductHandler={this.editProductHandler}
+                    deleteProductHandler={this.deleteProductHandler}
+                  />
+                  <ToastContainer />
+                </>
               }
             />
             Car
             <Route
               path="/cart"
               element={
-                <Cart
-                  cart={cart}
-                  decrement={this.decrementFromCart}
-                  increment={this.addToCart}
-                  removeFromCart={this.removeFromCart}
-                  clearCart={this.clearCart}
-                />
+                <>
+                  <Cart
+                    cart={cart}
+                    decrement={this.decrementFromCart}
+                    increment={this.incrementFromCart}
+                    removeFromCart={this.removeFromCart}
+                    clearCart={this.clearCart}
+                  />
+                  <ToastContainer />
+                </>
               }
             />
             <Route

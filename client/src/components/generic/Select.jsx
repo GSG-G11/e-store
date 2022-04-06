@@ -1,12 +1,12 @@
 import React from 'react';
 import './Select.css';
 
-const Select = ({ name, handleChange, children, value }) => {
+const Select = ({ name, children, value, onChange }) => {
   return (
     <>
       <select
         className="select"
-        onChange={handleChange}
+        onChange={onChange}
         id={name}
         name={name}
         value={value}

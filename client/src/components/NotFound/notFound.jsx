@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./notFound.css";
+import "./NotFound.css";
 
-const notFound = () => {
+const NotFound = () => {
   return (
     <>
       <div>
@@ -13,4 +13,4 @@ const notFound = () => {
     </>
   );
 };
-export default notFound;
+export default NotFound;

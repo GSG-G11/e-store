@@ -1,3 +1,3 @@
-import serverError from "./serverError";
+import ServerError from "./ServerError";
 
-export default serverError;
+export default ServerError;

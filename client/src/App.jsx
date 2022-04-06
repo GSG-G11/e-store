@@ -7,8 +7,8 @@ import {
   Home,
   AddForm,
   ProductDetails,
-  serverError,
-  notFound,
+  ServerError,
+  NotFound,
 } from './components';
 import Cart from './components/cart/Cart';
 import './index.css';
@@ -126,7 +126,7 @@ class App extends Component {
         })
         .catch((err) => {
           if (err.response.status === 500) {
-            window.location.href = <serverError />;
+            window.location.href = '/error';
           } else if (err.response.status === 400) {
             this.setState({ errMessage: err.response.data.message });
           }
@@ -149,7 +149,7 @@ class App extends Component {
         })
         .catch((err) => {
           if (err.response.status === 500) {
-            window.location.href = <serverError />;
+            window.location.href = '/error';
           } else if (err.response.status === 400) {
             this.setState({ errMessage: err.response.data.message });
           }
@@ -182,7 +182,7 @@ class App extends Component {
       })
       .catch((err) => {
         if (err.response.status === 500) {
-          window.location.href = <serverError />;
+          window.location.href = '/error';
         }
       });
   };
@@ -272,8 +272,8 @@ class App extends Component {
               path="product/:id"
               element={<ProductDetails addToCart={this.addToCart} />}
             />
-            <Route path="/error" element={<serverError />} />
-            <Route path="*" element={<notFound />} />
+            <Route path="/error" element={<ServerError />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
         {popUpDisplay && (

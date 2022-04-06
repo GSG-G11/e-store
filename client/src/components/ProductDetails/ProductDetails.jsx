@@ -5,7 +5,7 @@ import Product from '../Product';
 const ProductDetails = (props) => {
   const navigate = useNavigate();
   const { id: productId } = useParams();
-  const { addToCart } = props;
+  const { addToCart, isLoggedIn } = props;
 
   return (
     <>
@@ -17,7 +17,11 @@ const ProductDetails = (props) => {
         onClick={() => navigate('/')}
       />
       <div className="container">
-        <Product productId={productId} addToCart={addToCart} />
+        <Product
+          productId={productId}
+          addToCart={addToCart}
+          isLoggedIn={isLoggedIn}
+        />
       </div>
     </>
   );

@@ -9,6 +9,7 @@ import {
   ProductDetails,
   ServerError,
   NotFound,
+  Confirmation,
 } from './components';
 import Cart from './components/cart/Cart';
 import './index.css';
@@ -16,13 +17,17 @@ import './index.css';
 class App extends Component {
   state = {
     searchTerm: '',
+    categoryTerm: 'All',
+    priceTerm: 'High to Low',
     navShow: false,
     popUpDisplay: false,
+    confirmDisplay: false,
     errMessage: '',
     products: [],
     cart: JSON.parse(localStorage.cart) || [],
     isLoggedIn: JSON.parse(localStorage.isLoggedIn) || false,
     curProduct: { id: '', name: '', description: '', category: '', photo: '' },
+    isLoading: true,
   };
 
   handleChange = ({ target: { name, value } }) => {
@@ -172,12 +177,41 @@ class App extends Component {
     });
   };
 
+  handleIsEditable = ({ target: { id } }) => {
+    const { editable, products } = this.state;
+    const editableProduct = products.filter((product) => product.id === +id);
+    this.setState({
+      editable: editableProduct[0].id === +id ? [!editable[0], +id] : null,
+    });
+  };
+
+  deleteProductHandler = (productId) => {
+    console.log(productId);
+    axios
+      .delete(`http://localhost:5000/api/v1/product/${productId}`)
+      .then(() => {
+        this.setState((prevState) => ({
+          products: prevState.products.filter(
+            (product) => product.id !== productId
+          ),
+          confirmDisplay: false,
+        }));
+      })
+      .catch((err) => {
+        if (err.response.status === 500) {
+          console.log(err);
+        } else if (err.response.status === 400) {
+          this.setState({ errMessage: err.response.data.message });
+        }
+      });
+  };
+
   componentDidMount = () => {
     axios
       .get('http://localhost:5000/api/v1/products')
       .then((res) => {
         if (res.status === 200) {
-          this.setState({ products: res.data.products });
+          this.setState({ products: res.data.products, isLoading: false });
         }
       })
       .catch((err) => {
@@ -185,6 +219,13 @@ class App extends Component {
           window.location.href = '/error';
         }
       });
+  };
+
+  popupConfirmHandler = (id) => {
+    this.setState((previousState) => ({
+      confirmDisplay: !previousState.confirmDisplay,
+      curProduct: { ...previousState.curProduct, id },
+    }));
   };
 
   popupToggleHandler = (cancel) => {
@@ -213,9 +254,13 @@ class App extends Component {
       products,
       popUpDisplay,
       cart,
+      categoryTerm,
+      priceTerm,
       isLoggedIn,
       errMessage,
       curProduct,
+      confirmDisplay,
+      isLoading,
     } = this.state;
     let numberOfProducts = cart.reduce((acc, curr) => acc + curr.quantity, 0);
 
@@ -240,9 +285,15 @@ class App extends Component {
                   products={products}
                   isLoggedIn={isLoggedIn}
                   searchTerm={searchTerm}
+                  isLoading={isLoading}
+                  handleChange={this.handleChange}
                   addToCart={this.addToCart}
+                  categoryTerm={categoryTerm}
+                  popupConfirmHandler={this.popupConfirmHandler}
+                  priceTerm={priceTerm}
                   popupToggleHandler={this.popupToggleHandler}
                   editProductHandler={this.editProductHandler}
+                  deleteProductHandler={this.deleteProductHandler}
                 />
               }
             />
@@ -270,7 +321,12 @@ class App extends Component {
             />
             <Route
               path="product/:id"
-              element={<ProductDetails addToCart={this.addToCart} />}
+              element={
+                <ProductDetails
+                  addToCart={this.addToCart}
+                  isLoggedIn={isLoggedIn}
+                />
+              }
             />
             <Route path="/error" element={<ServerError />} />
             <Route path="*" element={<NotFound />} />
@@ -283,6 +339,13 @@ class App extends Component {
             updateCurProduct={this.updateCurProduct}
             errMessage={errMessage}
             curProduct={curProduct}
+          />
+        )}
+        {confirmDisplay && (
+          <Confirmation
+            popupConfirmHandler={this.popupConfirmHandler}
+            curProduct={curProduct}
+            deleteProductHandler={this.deleteProductHandler}
           />
         )}
       </>

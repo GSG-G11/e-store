@@ -1,4 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Info from '../Info';
 import Product from '../Product';
 
@@ -6,7 +8,6 @@ const ProductDetails = (props) => {
   const navigate = useNavigate();
   const { id: productId } = useParams();
   const { addToCart, isLoggedIn } = props;
-
   return (
     <>
       <Info
@@ -23,6 +24,7 @@ const ProductDetails = (props) => {
           isLoggedIn={isLoggedIn}
         />
       </div>
+      <ToastContainer />
     </>
   );
 };

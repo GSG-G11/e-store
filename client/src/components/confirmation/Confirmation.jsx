@@ -1,27 +1,32 @@
 import Button from '../generic/Button';
-import './Confirmation.css'
+import './Confirmation.css';
 
-const Confirmation = ({ popupConfirmHandler, deleteProductHandler, curProduct }) => {
+const Confirmation = ({
+  popupConfirmHandler,
+  deleteProductHandler,
+  curProduct,
+}) => {
   return (
-    
-    <div id="id01" class="modal">
-      <form class="modal-content" onSubmit={(e) => deleteProductHandler(e, curProduct.id)}>
-        <div class="container">
-          <h1>Delete Product</h1>
-          <p>Are you sure you want to delete your this item?</p>
-        
-          <div class="clearfix">
-          <Button 
-             className="cancelbtn"
-             type="submit"
-             children="Cancel"
-             onClick={() => popupConfirmHandler(true)} />
-             <Button  className="deletebtn"
-             type="submit"
-             children="Confirm"/>
-          </div>
+    <div className="modal">
+      <div className="container">
+        <h1>Delete Product</h1>
+        <p>Are you sure you want to delete your this item?</p>
+
+        <div className="clearfix">
+          <Button
+            className="cancelbtn"
+            type="submit"
+            children="Cancel"
+            onClick={() => popupConfirmHandler()}
+          />
+          <Button
+            className="deletebtn"
+            onClick={(e) => deleteProductHandler(curProduct.id)}
+            type="submit"
+            children="Confirm"
+          />
         </div>
-      </form>
+      </div>
     </div>
   );
 };

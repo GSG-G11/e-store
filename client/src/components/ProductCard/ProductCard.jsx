@@ -13,7 +13,7 @@ const ProductCard = (props) => {
     addToCart,
     isLoggedIn,
     editProductHandler,
-    deleteProductHandler,
+    popupConfirmHandler,
   } = props;
 
   return (
@@ -50,7 +50,7 @@ const ProductCard = (props) => {
                 />
                 <Icon
                   className="fas fa-trash"
-                  onClick={() => deleteProductHandler(id)}
+                  onClick={() => popupConfirmHandler(id)}
                 />
               </div>
             )}

@@ -19,6 +19,7 @@ const Home = (props) => {
     popupToggleHandler,
     editProductHandler,
     deleteProductHandler,
+    isLoading,
   } = props;
 
   const category = ['All', 'Laptop', 'Phone', 'TV'];
@@ -26,16 +27,19 @@ const Home = (props) => {
 
   const navigate = useNavigate();
 
-  const filteredData = products.filter((product) => {
-    if (searchTerm.length === 0) return true;
-    return product.name.toLowerCase().includes(searchTerm.toLowerCase());
-  }).filter((product) => {
-    if(categoryTerm === 'All') return true;
-    return product.category === categoryTerm
-  }).sort((a, b) => {
-    if(priceTerm === 'High to Low') return b.price - a.price;
-    return a.price - b.price;
-  })
+  const filteredData = products
+    .filter((product) => {
+      if (searchTerm.length === 0) return true;
+      return product.name.toLowerCase().includes(searchTerm.toLowerCase());
+    })
+    .filter((product) => {
+      if (categoryTerm === 'All') return true;
+      return product.category === categoryTerm;
+    })
+    .sort((a, b) => {
+      if (priceTerm === 'High to Low') return b.price - a.price;
+      return a.price - b.price;
+    });
 
   return (
     <>
@@ -51,21 +55,19 @@ const Home = (props) => {
         <h1 className="home-heading">
           <span>Top Selling Products</span>
         </h1>
-
         <Select
-        name='categoryTerm'
-        value={categoryTerm}
-        children={category}
-        onChange={handleChange}
+          name="categoryTerm"
+          value={categoryTerm}
+          children={category}
+          onChange={handleChange}
         />
-        <Select 
-        name='priceTerm'
-        value={priceTerm}
-        children={price}
-        onChange={handleChange}
+        <Select
+          name="priceTerm"
+          value={priceTerm}
+          children={price}
+          onChange={handleChange}
         />
-
-        {products.length ? (
+        {!isLoading ? (
           <div className="products">
             {filteredData.length ? (
               filteredData.map((product) => {

@@ -147,9 +147,9 @@ This is an example of how to list things you need to use the software and how to
 2. Install NPM packages
    ```sh
    npm install &&
-   cd client...npm intall
+   cd client...npm install
    ```
-3. create .env for your database you can use file `example.env` for know what you need
+3. create .env file for your database, you can read `example.env` file for know what you need
 
 4. open servers
 ```sh
